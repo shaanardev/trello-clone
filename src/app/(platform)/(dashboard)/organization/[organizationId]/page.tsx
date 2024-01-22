@@ -1,13 +1,7 @@
-// interface OrganizationPageProps = {
-
-import { OrganizationSwitcher } from "@clerk/nextjs";
-
-// }
-
 const OrganizationPage = () => {
  return (
     <div>
-      <OrganizationSwitcher hidePersonal/>
+      Org Page
     </div>
  );
 };
