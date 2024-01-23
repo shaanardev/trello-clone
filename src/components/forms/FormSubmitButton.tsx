@@ -11,7 +11,7 @@ type Variants = NonNullable<VariantProps<typeof buttonVariants>['variant']>;
 interface FormSubmitProps extends PropsWithChildren {
     disabled?: boolean;
     className?: string;
-    variant: Variants
+    variant?: Variants
 }
 
 export const FormSubmitButton = ({children, variant, className, disabled}: FormSubmitProps) => {

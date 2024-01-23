@@ -34,7 +34,7 @@ const handler = async(data: InputType):Promise<ReturnType> => {
     }
 
     revalidatePath(`/board/${board.id}`);
-    return { data:board }
+    return { data: board }
 }
 
 export const createBoard = createSafeAction(CreateBoardSchema, handler);
