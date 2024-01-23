@@ -7,7 +7,6 @@ import { useOrganization, useOrganizationList } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Separator } from "@/components/ui/separator";
 import { Accordion } from "@/components/ui/accordion";
 import { NavItem, type Organization } from "./NavItem";
 
