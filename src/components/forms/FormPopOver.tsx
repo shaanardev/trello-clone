@@ -1,6 +1,6 @@
 "use client"
 
-import { ElementRef, PropsWithChildren, useRef } from "react";
+import { type ElementRef, type PropsWithChildren, useRef } from "react";
 import { Popover, PopoverContent, PopoverTrigger, PopoverClose } from "@/components/ui/popover"
 import { useAction } from "@/hooks/useActions";
 import { createBoard } from "@/actions/create-board";

@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 import { auth } from "@clerk/nextjs";
 
 import OrgControl from "./_components/OrgControl";
