@@ -46,15 +46,15 @@ const handler = async(data: InputType):Promise<ReturnType> => {
                 imageLinkHTML,
                 imageUserName
             }
-        })
+        });
     } catch (error) {
         return {
-            error: `Internal Error - Failed to create board with title ${title}`
+            error: `Internal Server Error  - Failed to create board with title ${title}`
         }
     }
 
     revalidatePath(`/board/${board.id}`);
-    return { data: board }
+    return { data: board };
 }
 
 export const createBoard = createSafeAction(CreateBoardSchema, handler);

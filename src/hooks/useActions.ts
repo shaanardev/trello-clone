@@ -51,6 +51,7 @@ export const useAction = <TInput, TOutput> (
         execute,
         fieldErrors,
         error,
-        data
+        data,
+        isLoading
     }
 }
