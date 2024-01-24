@@ -14,7 +14,7 @@ interface FormSubmitProps extends PropsWithChildren {
     variant?: Variants
 }
 
-export const FormSubmitButton = ({children, variant, className, disabled}: FormSubmitProps) => {
+export const FormSubmitButton = ({children, variant = "primary", className, disabled}: FormSubmitProps) => {
     const { pending } = useFormStatus();
     
     return (

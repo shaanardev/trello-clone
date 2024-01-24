@@ -1,6 +1,6 @@
 "use client"
 
-import { PropsWithChildren } from "react";
+import { ElementRef, PropsWithChildren, useRef } from "react";
 import { Popover, PopoverContent, PopoverTrigger, PopoverClose } from "@/components/ui/popover"
 import { useAction } from "@/hooks/useActions";
 import { createBoard } from "@/actions/create-board";
@@ -10,6 +10,8 @@ import { X } from "lucide-react";
 import { FormInput } from "./FormInput";
 import { FormSubmitButton } from "./FormSubmitButton";
 import { toast } from "sonner";
+import { FormPicker } from "./FormPicker";
+import { useRouter } from "next/navigation";
 
 interface FormPopOverProps extends PropsWithChildren {
     side?: "left" | "right" | "top" | "bottom";
@@ -18,9 +20,14 @@ interface FormPopOverProps extends PropsWithChildren {
 }
 
 export const FormPopOver = ({ children, side = "bottom", align, sideOffset = 0 }: FormPopOverProps) => {
+    const closeRef = useRef<ElementRef<"button">>(null);
+    const router = useRouter();
+
     const { execute, fieldErrors } = useAction(createBoard, {
-        onSuccess: (data) => {
+        onSuccess: ({ id }) => {
             toast.success("Board created!");
+            closeRef.current?.click();
+            router.push(`/board/${id}`);
         },
         onError: (error) => {
             toast.error(error);
@@ -29,7 +36,9 @@ export const FormPopOver = ({ children, side = "bottom", align, sideOffset = 0 }
 
     const onSubmit = (formData: FormData) => {
         const title = formData.get("title") as string;
-        execute({ title })
+        const image = formData.get("image") as string;
+
+        execute({ title, image })
     }
 
     return (
@@ -46,7 +55,10 @@ export const FormPopOver = ({ children, side = "bottom", align, sideOffset = 0 }
                 <div className="text-sm font-medium text-center text-neutral-600 pb-4">
                     Create board
                 </div>
-                <PopoverClose asChild>
+                <PopoverClose 
+                    asChild 
+                    ref={closeRef}
+                >
                     <Button
                         className="h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600"
                         variant="ghost"
@@ -56,6 +68,12 @@ export const FormPopOver = ({ children, side = "bottom", align, sideOffset = 0 }
                 </PopoverClose>
                 <form action={onSubmit} className="space-y-4">
                     <div className="space-y-4">
+                        <FormPicker
+                            id="image"
+                            errors={fieldErrors}
+                        >
+                            
+                        </FormPicker>
                         <FormInput
                             id="title"
                             label="Board title"
