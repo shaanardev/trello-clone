@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { FormInput } from "@/components/forms/FormInput";
 import { updateBoard } from "@/actions/update-board";
 import { useAction } from "@/hooks/useActions";
+import { useEditingFormInput } from "@/hooks/useEditingFormInput";
 
 interface BoardTitleFormProps {
     board: Board
@@ -26,11 +27,8 @@ export const BoardTitleForm = ({ board }: BoardTitleFormProps) => {
         }
     });
 
-    const formRef = useRef<ElementRef<"form">>(null);
-    const inputRef = useRef<ElementRef<"input">>(null);
-
     const [title, setTitle] = useState<string>(board.title);
-    const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [formRef, inputRef, isEditing, setIsEditing] = useEditingFormInput();
 
     const enableEditing = () => {
         setIsEditing(true);
