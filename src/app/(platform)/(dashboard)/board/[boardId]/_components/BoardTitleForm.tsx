@@ -1,6 +1,6 @@
 "use client";
 
-import { type ElementRef, useRef, useState } from "react";
+import { useState } from "react";
 import { type Board } from "@prisma/client";
 import { toast } from "sonner";
 
@@ -13,7 +13,6 @@ import { useEditingFormInput } from "@/hooks/useEditingFormInput";
 interface BoardTitleFormProps {
     board: Board
 }
-
 
 export const BoardTitleForm = ({ board }: BoardTitleFormProps) => {
     const {  execute } = useAction(updateBoard, {
@@ -28,19 +27,21 @@ export const BoardTitleForm = ({ board }: BoardTitleFormProps) => {
     });
 
     const [title, setTitle] = useState<string>(board.title);
-    const [formRef, inputRef, isEditing, setIsEditing] = useEditingFormInput();
+    const [formRef, inputRef, isEditing, _, enableEditing, disableEditing] = useEditingFormInput({
+        onEnableEditing: () => {
+            setTimeout(() => {
+                inputRef.current?.focus();
+                inputRef.current?.select();
+            })
+        }
+    });
 
-    const enableEditing = () => {
-        setIsEditing(true);
-        setTimeout(() => {
-            inputRef.current?.focus();
-            inputRef.current?.select();
-        })
-    }
-    const disableEditing = () => setIsEditing(false);
-    
     const onSubmit = (formData: FormData) => {
         const title = formData.get("title") as string;
+        if (title === board.title) {
+            return disableEditing();
+        }
+
         execute({ 
             title, 
             id: board.id 

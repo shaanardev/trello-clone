@@ -1,6 +1,6 @@
 "use client";
 
-import { useEventListener, useOnClickOutside } from "usehooks-ts";
+import { useOnClickOutside } from "usehooks-ts";
 import { useParams, useRouter } from "next/navigation";
 import { Plus, X } from "lucide-react";
 
@@ -17,8 +17,16 @@ export const BoardListForm = () => {
     const router = useRouter();
     const params = useParams();
     
-    const [formRef, inputRef, isEditing, setIsEditing] = useEditingFormInput();
-    
+    const [formRef, inputRef, isEditing, _, enableEditing, disableEditing] = useEditingFormInput({
+        onEnableEditing: () => {
+            setTimeout(() => {
+                inputRef.current?.focus();
+            });
+        }
+    });
+
+    useOnClickOutside(formRef, disableEditing);
+
     const { execute, fieldErrors } = useAction(createBoardList, {
         onSuccess: ({ title }) => {
             toast.success(`List "${title}" created`);
@@ -36,24 +44,6 @@ export const BoardListForm = () => {
 
         execute({ title, boardId });
     }
-
-    const enableEditing = () => {
-        setIsEditing(true);
-        setTimeout(() => {
-            inputRef.current?.focus();
-        });
-    };
-    
-    const disableEditing = () => setIsEditing(false);
-
-    const onKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Escape") {
-            disableEditing();
-        };
-    };
-
-    useEventListener("keydown", onKeyDown);
-    useOnClickOutside(formRef, disableEditing);
 
     if (isEditing) {
         return (
