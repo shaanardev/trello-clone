@@ -6,7 +6,7 @@ interface UseEditingFormInputOptions {
     onDisableEditing?: () => void;
 }
 
-export const useEditingFormInput = (options: UseEditingFormInputOptions) => {
+export const useEditingFormInput = (options?: UseEditingFormInputOptions) => {
     const formRef = useRef<ElementRef<"form">>(null);
     const inputRef = useRef<ElementRef<"input">>(null);
 

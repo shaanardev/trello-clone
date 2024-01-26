@@ -12,9 +12,10 @@ import { BoardListOptions } from "./BoardListOptions";
 
 interface BoardListHeaderProps {
     boardList: BoardList
+    onAddCard: () => void;
 }
 
-export const BoardListHeader = ({ boardList }: BoardListHeaderProps) => {
+export const BoardListHeader = ({ boardList, onAddCard }: BoardListHeaderProps) => {
     const [formRef, inputRef, isEditing, _, enableEditing, disableEditing] = useEditingFormInput({
         onEnableEditing: () => {
             setTimeout(() => {
@@ -81,7 +82,7 @@ export const BoardListHeader = ({ boardList }: BoardListHeaderProps) => {
                 </div>
             )}
             <BoardListOptions 
-                onAddCard={() => {}}
+                onAddCard={onAddCard}
                 boardList={boardList}
             />
         </div>
