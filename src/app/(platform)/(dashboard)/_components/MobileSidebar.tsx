@@ -1,26 +1,22 @@
 "use client"
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Menu } from "lucide-react";
 
 import { useMobileSidebar } from "@/hooks/useMobileSidebar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import Sidebar from "./Sidebar";
+import { useIsMounted } from "usehooks-ts";
 
 export const MobileSidebar = () => {
     const pathName = usePathname();
-    const [ isMounted, setIsMounted] = useState<boolean>(false);
+    const isMounted = useIsMounted();
 
     const isOpen = useMobileSidebar((state) => state.isOpen)
     const onOpen = useMobileSidebar((state) => state.onOpen)
     const onClose = useMobileSidebar((state) => state.onClose)
-
-    useEffect(() => {
-        // hydration checker for zustand
-        setIsMounted(true);
-    }, []);
 
     useEffect(() => {
         onClose()
