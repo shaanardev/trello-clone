@@ -12,7 +12,7 @@ import { useAction } from "@/hooks/useActions";
 import { createCard } from "@/actions/create-board-card";
 import { toast } from "sonner";
 
-interface CardFormProps {
+interface BoardCardFormProps {
     boardListId: string;
     isEditing: boolean;
     enableEditing: () => void;
@@ -20,7 +20,7 @@ interface CardFormProps {
   };
   
 
-export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(({
+export const BoardCardForm = forwardRef<HTMLTextAreaElement, BoardCardFormProps>(({
     boardListId, isEditing, enableEditing, disableEditing
 }, ref) => {
     const params = useParams();
@@ -109,4 +109,4 @@ export const CardForm = forwardRef<HTMLTextAreaElement, CardFormProps>(({
       );
 });
 
-CardForm.displayName = "CardForm";
+BoardCardForm.displayName = "CardForm";

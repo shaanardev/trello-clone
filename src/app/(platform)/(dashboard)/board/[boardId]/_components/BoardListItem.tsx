@@ -4,7 +4,9 @@ import { type ElementRef, useRef, useState } from "react";
 
 import type { BoardListWithCards } from "@/types";
 import { BoardListHeader } from "./BoardListHeader";
-import { CardForm } from "./CardForm";
+import { BoardCardForm } from "./BoardCardForm";
+import { cn } from "@/lib/utils";
+import { BoardCardItem } from "./BoardCardItem";
 
 interface BoardListItemProps {
     boardList: BoardListWithCards;
@@ -23,7 +25,7 @@ export const BoardListItem = ({ boardList, index }: BoardListItemProps) => {
 
     const disableEditing = () => setIsEditing(false);
 
-
+    const totalCards = boardList.cards.length;
 
     return (
         <li className="shrink-0 h-full w-[272px] select-none">
@@ -32,7 +34,21 @@ export const BoardListItem = ({ boardList, index }: BoardListItemProps) => {
                     onAddCard={enableEditing} 
                     boardList={boardList}
                 />
-                <CardForm 
+                <ol
+                    className={cn(
+                        "mx-1 px-1 py-0.5 flex flex-col gap-y-2",
+                        totalCards > 0 ? "mt-2" : "mt-0"
+                    )}
+                >
+                    {boardList.cards.map((card, index) => (
+                        <BoardCardItem 
+                            key={card.id}
+                            index={index}
+                            boardCard={card}
+                        />
+                    ))}
+                </ol>
+                <BoardCardForm 
                     boardListId={boardList.id}
                     ref={textareaRef}
                     isEditing={isEditing}
