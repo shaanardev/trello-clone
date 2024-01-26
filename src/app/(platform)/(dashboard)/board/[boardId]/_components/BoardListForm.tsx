@@ -10,7 +10,7 @@ import { FormInput } from "@/components/forms/FormInput";
 import { Button } from "@/components/ui/button";
 import { FormSubmitButton } from "@/components/forms/FormSubmitButton";
 import { useAction } from "@/hooks/useActions";
-import { createBoardList } from "@/actions/create-board-list";
+import { createBoardList } from "@/actions/board-list/create-board-list";
 import { toast } from "sonner";
 
 export const BoardListForm = () => {

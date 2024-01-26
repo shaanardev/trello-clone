@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { FormInput } from "@/components/forms/FormInput";
-import { updateBoard } from "@/actions/update-board";
+import { updateBoard } from "@/actions/board/update-board";
 import { useAction } from "@/hooks/useActions";
 import { useEditingFormInput } from "@/hooks/useEditingFormInput";
 

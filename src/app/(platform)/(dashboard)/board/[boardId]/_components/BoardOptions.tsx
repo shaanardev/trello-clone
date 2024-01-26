@@ -10,7 +10,7 @@ import {
     PopoverClose 
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { deleteBoard } from "@/actions/delete-board";
+import { deleteBoard } from "@/actions/board/delete-board";
 import { useAction } from "@/hooks/useActions";
 
 interface BoardOptionsProps {

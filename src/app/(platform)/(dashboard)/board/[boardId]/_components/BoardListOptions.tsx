@@ -15,8 +15,8 @@ import { Button } from "@/components/ui/button";
 import { FormSubmitButton } from "@/components/forms/FormSubmitButton";
 import { Separator } from "@/components/ui/separator";
 import { useAction } from "@/hooks/useActions";
-import { deleteBoardList } from "@/actions/delete-board-list";
-import { copyBoardList } from "@/actions/copy-board-list";
+import { deleteBoardList } from "@/actions/board-list/delete-board-list";
+import { copyBoardList } from "@/actions/board-list/copy-board-list";
 
 interface BoardListOptionsProps {
     boardList: BoardList;

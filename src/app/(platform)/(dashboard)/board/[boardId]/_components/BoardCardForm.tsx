@@ -9,7 +9,7 @@ import { FormSubmitButton } from "@/components/forms/FormSubmitButton";
 import { FormTextarea } from "@/components/forms/FormTextArea";
 import { Button } from "@/components/ui/button";
 import { useAction } from "@/hooks/useActions";
-import { createCard } from "@/actions/create-board-card";
+import { createCard } from "@/actions/board-card/create-board-card";
 import { toast } from "sonner";
 
 interface BoardCardFormProps {
