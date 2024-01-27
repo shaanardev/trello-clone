@@ -1,15 +1,12 @@
 "use client"
 
-import { Skeleton } from "@/components/ui/skeleton";
 import { useOrganization } from "@clerk/nextjs";
 import { CreditCard } from "lucide-react";
 import Image from "next/image";
 
-interface OrgInfoProps {
+import { Skeleton } from "@/components/ui/skeleton";
 
-}
-
-export const OrgInfo = ({}: OrgInfoProps) => {
+export const OrgInfo = () => {
     const { organization, isLoaded } = useOrganization();
 
     if (!isLoaded) {

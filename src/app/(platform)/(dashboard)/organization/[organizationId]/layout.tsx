@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react";
 import { auth } from "@clerk/nextjs";
 
-import OrgControl from "./_components/OrgControl";
+import OrgControl from "./_components/Controls";
 import { startCase } from "@/lib/utils";
 
 export async function generateMetadata() {
