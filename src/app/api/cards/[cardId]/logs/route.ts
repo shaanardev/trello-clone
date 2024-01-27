@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { ENTITY_TYPE } from "@prisma/client";
 
-export const GET = async ({ params }: { params: { cardId: string } }) => {
+export const GET = async (_req: Request, { params }: { params: { cardId: string } }) => {
     try {
         const { userId, orgId } = auth();
 
