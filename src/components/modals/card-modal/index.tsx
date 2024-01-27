@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import type { AuditLog } from "@prisma/client";
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useCardModal } from "@/hooks/useCardModal";
@@ -9,12 +10,9 @@ import { fetcher } from "@/lib/fetcher";
 import { CardModalHeader } from "./Header";
 import { CardModalDescription } from "./Description";
 import { CardModalActions } from "./Actions";
+import { CardModalActivityLogs } from "./Activity";
 
-interface CardModalProps {
- // Define your props here
-}
-
-export const CardModal = ({}: CardModalProps) => {
+export const CardModal = () => {
     const id = useCardModal((state) => state.id);
     const isOpen = useCardModal((state) => state.isOpen);
     const onClose = useCardModal((state) => state.onClose);
@@ -24,44 +22,40 @@ export const CardModal = ({}: CardModalProps) => {
         queryFn: () => fetcher(`/api/cards/${id}`)
     });
 
+    const { data: activityLogs } = useQuery<AuditLog[]>({
+        queryKey: ["card-logs", id],
+        queryFn: () => fetcher(`/api/cards/${id}/logs`)
+    });
+
     return (
         <Dialog
             open={isOpen}
             onOpenChange={onClose}
         >
-            <DialogContent>
-                {!card ? (
-                    <CardModal.Skeleton />
-                ):  
-                    <>
-                        <CardModalHeader card={card} />
-                        <div className="grid grid-cols-1 md:grid-cols-4 md:gap-4">
-                            <div className="col-span-3">
-                                <div className="w-full space-y-6">
-                                    <CardModalDescription card={card} />
-                                </div>
-                            </div>
-                            <CardModalActions card={card} />
-                        </div>
-                    </>        
+            <DialogContent className="max-w-3xl">
+                {!card ? 
+                    <CardModalHeader.Skeleton />
+                :   <CardModalHeader card={card} />
                 }
+                <div className="grid grid-cols-1 md:grid-cols-4 md:gap-4">
+                    <div className="col-span-3">
+                        <div className="w-full space-y-6">
+                            {!card ? 
+                                <CardModalDescription.Skeleton />
+                            :   <CardModalDescription card={card} />
+                            }
+                            {!activityLogs ? 
+                                <CardModalActivityLogs.Skeleton />
+                            :   <CardModalActivityLogs activityLogs={activityLogs} />
+                            }
+                        </div>
+                    </div>
+                    {!card ? 
+                        <CardModalActions.Skeleton />
+                    :   <CardModalActions card={card} />
+                    }
+                </div>
             </DialogContent>        
         </Dialog>
-    );
-};
-
-CardModal.Skeleton = function CardModalSkeleton() {
-    return (
-        <>
-            <CardModalHeader.Skeleton />
-            <div className="grid grid-cols-1 md:grid-cols-4 md:gap-4">
-                <div className="col-span-3">
-                    <div className="w-full space-y-6">
-                        <CardModalDescription.Skeleton />
-                    </div>
-                </div>
-                <CardModalActions.Skeleton />
-            </div>
-        </>
     );
 };
