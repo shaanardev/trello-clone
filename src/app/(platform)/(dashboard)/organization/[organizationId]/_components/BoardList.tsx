@@ -7,6 +7,8 @@ import { db } from "@/lib/db";
 import { Hint } from "@/components/Hint";
 import { FormPopOver } from "@/components/forms/FormPopOver";
 import { Skeleton } from "@/components/ui/skeleton";
+import { MAX_FREE_BOARDS } from "@/constants/boards";
+import { getAvailableCount } from "@/lib/org-limit";
 
 export const BoardList = async () => {
     const { orgId } = auth();
@@ -24,6 +26,8 @@ export const BoardList = async () => {
         }
     });
 
+    const availableCount = await getAvailableCount();
+    
     return (
         <div className="space-y-4">
             <div className="flex items-center font-semibold text-lg text-neutral-700">
@@ -58,7 +62,7 @@ export const BoardList = async () => {
                             Create new board
                         </p>
                         <span className="text-xs">
-                            5 remaining
+                            {`${MAX_FREE_BOARDS - availableCount} remaining`}
                         </span>
                         <Hint 
                             description={`Free workspaces can have up to 5 open boards.For unlimited boards upgrade this workspace`}
