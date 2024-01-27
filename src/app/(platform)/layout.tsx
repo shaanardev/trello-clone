@@ -6,10 +6,9 @@ import { getAvailableAITokens } from "@/lib/org/ai-tokens-limit";
  
 const PlatformLayout = async ({ children }: PropsWithChildren) => {
 	const isPro = await checkSubscription();
-	const aiTokens = await getAvailableAITokens();
 
 	return (
-		<Providers isPro={isPro} aiTokens={aiTokens}>
+		<Providers isPro={isPro}>
 			{children}
 		</Providers>
 	);

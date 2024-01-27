@@ -15,8 +15,6 @@ import { Button } from "@/components/ui/button";
 import { updateBoardCard } from "@/actions/board-card/update";
 import { useAction } from "@/hooks/useActions";
 import { type GenerateCardDescriptionType } from "@/lib/validators/generate-card-description";
-import { useAITokensContext } from "@/components/providers/AITokensProvider";
-import { MAX_FREE_AI_TOKENS } from "@/constants/limits";
 import { useEditingFormInput } from "@/hooks/useEditingFormInput";
 
 interface CardModalDescriptionProps {
@@ -26,7 +24,6 @@ interface CardModalDescriptionProps {
 export const CardModalDescription = ({ card }: CardModalDescriptionProps) => {
     const queryClient = useQueryClient();
     const params = useParams();
-    const aiTokens = useAITokensContext();
 
     const [text, setText] = useState(card.description);
 
@@ -48,6 +45,11 @@ export const CardModalDescription = ({ card }: CardModalDescriptionProps) => {
             queryClient.invalidateQueries({
                 queryKey: ["card-logs", card.id]
             });
+
+            queryClient.invalidateQueries({
+                queryKey: ["ai-tokens"]
+            });
+
 
             toast.success(`Card "${title}" updated`);
             disableEditing();
@@ -132,7 +134,7 @@ export const CardModalDescription = ({ card }: CardModalDescriptionProps) => {
                             <Button
                                 type="button"
                                 onClick={onGenerate}
-                                disabled={aiTokens === MAX_FREE_AI_TOKENS || isPending}
+                                disabled={isPending}
                                 size="sm"
                                 variant="gray"
                             >

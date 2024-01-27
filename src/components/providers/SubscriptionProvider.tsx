@@ -2,7 +2,7 @@
 
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 
-const SubscriptionContext = createContext<boolean | undefined>(undefined);
+const SubscriptionContext = createContext<boolean>(false);
 
 interface SubscriptionContextProviderProps extends PropsWithChildren {
     isPro: boolean;

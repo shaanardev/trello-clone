@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { MoreHorizontal, Trash, X, Clipboard, Infinity } from "lucide-react";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
 import { formatDuration, intervalToDuration } from "date-fns";
 
 import { 
@@ -17,8 +18,8 @@ import { useAction } from "@/hooks/useActions";
 import { copyBoard } from "@/actions/board/copy";
 import { useSubscriptionContext } from "@/components/providers/SubscriptionProvider";
 import { Hint } from "@/components/Hint";
-import { useAITokensContext } from "@/components/providers/AITokensProvider";
 import { MAX_FREE_AI_TOKENS } from "@/constants/limits";
+import { fetcher } from "@/lib/fetcher";
 
 
 const calculateTimeLeft = () => {
@@ -59,7 +60,6 @@ interface BoardOptionsProps {
 
 export const BoardOptions = ({ boardId }: BoardOptionsProps) => {
     const isPro = useSubscriptionContext();
-    const aiTokens = useAITokensContext();
 
     const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
@@ -70,6 +70,11 @@ export const BoardOptions = ({ boardId }: BoardOptionsProps) => {
         }, 1000);
       
         return () => clearTimeout(timer);
+    });
+
+    const { data: aiTokens } = useQuery<number>({
+        queryKey: ["ai-tokens"],
+        queryFn: () => fetcher(`/api/ai/tokens`)
     });
 
     const {  execute: destroyBoard, isLoading: isDeleting } = useAction(deleteBoard, {
@@ -115,7 +120,7 @@ export const BoardOptions = ({ boardId }: BoardOptionsProps) => {
                                     <Infinity className="h-4 w-4" /> 
                                 : 
                                     <span className={aiTokens && aiTokens === 0 ? "text-red-500" : "text-normal"}>
-                                        {`${MAX_FREE_AI_TOKENS - aiTokens} remaining`}
+                                        {`${MAX_FREE_AI_TOKENS - (aiTokens ?? 0)} remaining`}
                                     </span>
                                 }
                             </Hint>
