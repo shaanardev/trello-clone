@@ -10,7 +10,7 @@ import { db } from "@/lib/db";
 import { createSafeAction } from "@/lib/create-safe-action";
 import { DeleteBoardSchema } from "./schema";
 import { createAuditLog } from "@/lib/create-audit-log";
-import { decreaseAvailableCount } from "@/lib/org-limit";
+import { decreaseAvailableBoardCount } from "@/lib/org/board-limit";
 import { checkSubscription } from "@/lib/subscription";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
@@ -36,7 +36,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         });
 
         if (!isPro) {
-            await decreaseAvailableCount();
+            await decreaseAvailableBoardCount();
         }
         
         await createAuditLog({

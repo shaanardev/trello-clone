@@ -9,7 +9,7 @@ import { createSafeAction } from "@/lib/create-safe-action";
 import type { InputType, ReturnType } from "./types";
 import { CreateBoardSchema } from "./schema";
 import { createAuditLog } from "@/lib/create-audit-log";
-import { incrementAvailableCount, hasAvailableCount } from "@/lib/org-limit";
+import { incrementAvailableBoardCount, hasAvailableBoardCount } from "@/lib/org/board-limit";
 import { checkSubscription } from "@/lib/subscription";
 
 const handler = async(data: InputType):Promise<ReturnType> => {
@@ -21,7 +21,7 @@ const handler = async(data: InputType):Promise<ReturnType> => {
         }
     }
 
-    const canCreateBoard = await hasAvailableCount();
+    const canCreateBoard = await hasAvailableBoardCount();
     const isPro = await checkSubscription();
 
     if (!canCreateBoard && !isPro) {
@@ -62,7 +62,7 @@ const handler = async(data: InputType):Promise<ReturnType> => {
         });
 
         if (!isPro) {
-            await incrementAvailableCount();
+            await incrementAvailableBoardCount();
         }
 
         await createAuditLog({

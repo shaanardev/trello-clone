@@ -4,7 +4,7 @@ import { BoardTitleForm } from "./TitleForm";
 import { BoardOptions } from "./Options";
 
 interface BoardNavbarProps {
-    board: Board
+    board: Board;
 }
 
 export const BoardNavbar = async ({ board }: BoardNavbarProps) => {

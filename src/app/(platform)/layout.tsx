@@ -1,25 +1,17 @@
 import type { PropsWithChildren } from "react";
-import { ClerkProvider } from "@clerk/nextjs";
-import { Toaster } from "sonner";
 
-import { ModalProvider } from "@/components/providers/ModalProvider";
-import { QueryProvider } from "@/components/providers/QueryProvider";
-import { SubscriptionContextProvider } from "@/components/providers/SubscriptionProvider";
 import { checkSubscription } from "@/lib/subscription";
+import { Providers } from "@/components/providers";
+import { getAvailableAITokens } from "@/lib/org/ai-tokens-limit";
  
 const PlatformLayout = async ({ children }: PropsWithChildren) => {
 	const isPro = await checkSubscription();
+	const aiTokens = await getAvailableAITokens();
 
 	return (
-		<ClerkProvider>
-			<QueryProvider>
-				<Toaster richColors />
-				<ModalProvider />
-				<SubscriptionContextProvider isPro={isPro}>
-					{children}
-				</SubscriptionContextProvider>
-			</QueryProvider>
-		</ClerkProvider>
+		<Providers isPro={isPro} aiTokens={aiTokens}>
+			{children}
+		</Providers>
 	);
 };
 

@@ -1,7 +1,9 @@
 "use client";
 
-import { MoreHorizontal, Trash, X, Clipboard } from "lucide-react";
+import { useEffect, useState } from "react";
+import { MoreHorizontal, Trash, X, Clipboard, Infinity } from "lucide-react";
 import { toast } from "sonner";
+import { formatDuration, intervalToDuration } from "date-fns";
 
 import { 
     Popover, 
@@ -13,12 +15,63 @@ import { Button } from "@/components/ui/button";
 import { deleteBoard } from "@/actions/board/delete";
 import { useAction } from "@/hooks/useActions";
 import { copyBoard } from "@/actions/board/copy";
+import { useSubscriptionContext } from "@/components/providers/SubscriptionProvider";
+import { Hint } from "@/components/Hint";
+import { useAITokensContext } from "@/components/providers/AITokensProvider";
+import { MAX_FREE_AI_TOKENS } from "@/constants/limits";
+
+
+const calculateTimeLeft = () => {
+    const now = new Date();
+    const nextHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 1);
+     
+    const duration = intervalToDuration({
+       start: now,
+       end: nextHour
+    });
+
+    if (duration.minutes && duration.minutes <= 10) {
+        return formatDuration(duration, {
+            format: ['minutes', 'seconds'],
+            zero: false,
+            delimiter: ", "
+        }).replace('minutes', 'mins').replace('seconds', 'secs');;
+    }
+
+    if (duration.seconds) {
+        if (duration.minutes && duration.minutes <= 10) {
+            return formatDuration(duration, {
+                format: ['seconds'],
+                zero: false,
+            }).replace('seconds', 'secs');
+        }
+    }
+   
+    return formatDuration(duration, {
+        format: ['minutes'],
+        zero: false,
+     }).replace('seconds', 'secs');;
+};
 
 interface BoardOptionsProps {
     boardId: string
 }
 
 export const BoardOptions = ({ boardId }: BoardOptionsProps) => {
+    const isPro = useSubscriptionContext();
+    const aiTokens = useAITokensContext();
+
+    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            const time = calculateTimeLeft();
+            setTimeLeft(time);
+        }, 1000);
+      
+        return () => clearTimeout(timer);
+    });
+
     const {  execute: destroyBoard, isLoading: isDeleting } = useAction(deleteBoard, {
         onError: (error) => toast.error(error)
     });
@@ -51,6 +104,23 @@ export const BoardOptions = ({ boardId }: BoardOptionsProps) => {
                     </Button>
                 </PopoverClose>
                 <div className="flex flex-col items-center justify-center space-y-3">
+                    <div className="rounded-sm w-[80%] h-auto p-2 text-sm flex items-center justify-between">
+                        <span className="font-semibold">AI Tokens:</span>
+                        <span >
+                            <Hint 
+                                description={isPro ? "Unlimited tokens" : `Resets in ${timeLeft}`}
+                                sideOffset={15}
+                            >
+                                {isPro ? 
+                                    <Infinity className="h-4 w-4" /> 
+                                : 
+                                    <span className={aiTokens && aiTokens === 0 ? "text-red-500" : "text-normal"}>
+                                        {`${MAX_FREE_AI_TOKENS - aiTokens} remaining`}
+                                    </span>
+                                }
+                            </Hint>
+                        </span>
+                    </div>
                     <Button
                         variant="gray"
                         onClick={() => cloneBoard({ boardId })}

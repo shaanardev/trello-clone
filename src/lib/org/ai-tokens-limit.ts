@@ -1,9 +1,9 @@
 import { auth } from "@clerk/nextjs";
 
 import { db } from "@/lib/db";
-import { MAX_FREE_BOARDS } from "@/constants/boards";
+import { MAX_FREE_BOARDS } from "@/constants/limits";
 
-const modifyAvailableCount = async (modifyCountAction: (count: number) => number) => {
+const modifyAvailableAITokens = async (modifyCountAction: (count: number) => number) => {
     const { orgId } = auth();
 
     if (!orgId) {
@@ -22,23 +22,23 @@ const modifyAvailableCount = async (modifyCountAction: (count: number) => number
                 orgId
             },
             data: {
-                count: modifyCountAction(orgLimit.count)
+                aiTokens: modifyCountAction(orgLimit.aiTokens)
             }
         });
     } else {
         await db.orgLimit.create({
             data: {
                 orgId,
-                count: 1
+                aiTokens: 1
             }
         });
     }
 }
 
-export const incrementAvailableCount = () => modifyAvailableCount(count => count + 1);
-export const decreaseAvailableCount = () => modifyAvailableCount(count => Math.max(0, count - 1));
+export const incrementAvailableAITokens = () => modifyAvailableAITokens(count => count + 1);
+export const decreaseAvailableAITokens = () => modifyAvailableAITokens(count => Math.max(0, count - 1));
 
-export const hasAvailableCount = async () => {
+export const hasAvailableAITokens = async () => {
     const { orgId } = auth();
 
     if (!orgId) {
@@ -51,10 +51,10 @@ export const hasAvailableCount = async () => {
         }
     });
 
-    return !orgLimit || orgLimit.count < MAX_FREE_BOARDS;
+    return !orgLimit || orgLimit.aiTokens < MAX_FREE_BOARDS;
 };
 
-export const getAvailableCount = async () => {
+export const getAvailableAITokens = async () => {
     const { orgId } = auth();
 
     if (!orgId) {
@@ -67,5 +67,5 @@ export const getAvailableCount = async () => {
         }
     });
 
-    return orgLimit?.count ?? 0;
+    return orgLimit?.aiTokens ?? 0;
 };

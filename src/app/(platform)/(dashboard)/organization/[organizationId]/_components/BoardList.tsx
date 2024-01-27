@@ -7,8 +7,8 @@ import { db } from "@/lib/db";
 import { Hint } from "@/components/Hint";
 import { FormPopOver } from "@/components/forms/FormPopOver";
 import { Skeleton } from "@/components/ui/skeleton";
-import { MAX_FREE_BOARDS } from "@/constants/boards";
-import { getAvailableCount } from "@/lib/org-limit";
+import { MAX_FREE_BOARDS } from "@/constants/limits";
+import { getAvailableBoardCount } from "@/lib/org/board-limit";
 import { checkSubscription } from "@/lib/subscription";
 
 export const BoardList = async () => {
@@ -27,11 +27,11 @@ export const BoardList = async () => {
         }
     });
 
-    const availableCount = await getAvailableCount();
+    const availableCount = await getAvailableBoardCount();
     const isPro = await checkSubscription();
-    
+
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 animate-in fade-in-50 duration-600 ease-in">
             <div className="flex items-center font-semibold text-lg text-neutral-700">
                 <User2 className="w-6 h-6 mr-2" />
                 Your boards
@@ -82,14 +82,14 @@ export const BoardList = async () => {
 BoardList.Skeleton = function SkeletonBoardList() {
     return (
         <div className="grid gird-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            <Skeleton className="aspect-video h-full w-full p-2" />
-            <Skeleton className="aspect-video h-full w-full p-2" />
-            <Skeleton className="aspect-video h-full w-full p-2" />
-            <Skeleton className="aspect-video h-full w-full p-2" />
-            <Skeleton className="aspect-video h-full w-full p-2" />
-            <Skeleton className="aspect-video h-full w-full p-2" />
-            <Skeleton className="aspect-video h-full w-full p-2" />
-            <Skeleton className="aspect-video h-full w-full p-2" />
+            <Skeleton className="aspect-video h-full w-full p-2 bg-gray-200" />
+            <Skeleton className="aspect-video h-full w-full p-2 bg-gray-200" />
+            <Skeleton className="aspect-video h-full w-full p-2 bg-gray-200" />
+            <Skeleton className="aspect-video h-full w-full p-2 bg-gray-200" />
+            <Skeleton className="aspect-video h-full w-full p-2 bg-gray-200" />
+            <Skeleton className="aspect-video h-full w-full p-2 bg-gray-200" />
+            <Skeleton className="aspect-video h-full w-full p-2 bg-gray-200" />
+            <Skeleton className="aspect-video h-full w-full p-2 bg-gray-200" />
         </div>
     );
 };

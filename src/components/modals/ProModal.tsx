@@ -18,10 +18,6 @@ export const ProModal = () => {
         onError: (error) => toast.error(error)
     });
 
-    const onClick = () => {
-        execute({});
-    }
-
     return (
         <Dialog
             open={proModal.isOpen}
@@ -46,6 +42,7 @@ export const ProModal = () => {
                     <div className="pl-3">
                         <ul className="text-sm list-disc">
                             <li>Unlimited boards</li>
+                            <li>Complete AI integration</li>
                             <li>Advanced checklists</li>
                             <li>Admin and security featues</li>
                             <li>And more!</li>
@@ -53,7 +50,7 @@ export const ProModal = () => {
                     </div>
                     <Button
                         variant="primary"
-                        onClick={onClick}
+                        onClick={() => execute({})}
                         disabled={isLoading}
                         className="w-full"
                     >
