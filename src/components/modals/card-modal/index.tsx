@@ -7,6 +7,8 @@ import { useCardModal } from "@/hooks/useCardModal";
 import type { BoardCardWithList } from "@/types";
 import { fetcher } from "@/lib/fetcher";
 import { CardModalHeader } from "./Header";
+import { CardModalDescription } from "./Description";
+import { CardModalActions } from "./Actions";
 
 interface CardModalProps {
  // Define your props here
@@ -29,13 +31,37 @@ export const CardModal = ({}: CardModalProps) => {
         >
             <DialogContent>
                 {!card ? (
-                    <CardModalHeader.Skeleton />
+                    <CardModal.Skeleton />
                 ):  
-                    <CardModalHeader 
-                        card={card}
-                    />
+                    <>
+                        <CardModalHeader card={card} />
+                        <div className="grid grid-cols-1 md:grid-cols-4 md:gap-4">
+                            <div className="col-span-3">
+                                <div className="w-full space-y-6">
+                                    <CardModalDescription card={card} />
+                                </div>
+                            </div>
+                            <CardModalActions card={card} />
+                        </div>
+                    </>        
                 }
             </DialogContent>        
         </Dialog>
+    );
+};
+
+CardModal.Skeleton = function CardModalSkeleton() {
+    return (
+        <>
+            <CardModalHeader.Skeleton />
+            <div className="grid grid-cols-1 md:grid-cols-4 md:gap-4">
+                <div className="col-span-3">
+                    <div className="w-full space-y-6">
+                        <CardModalDescription.Skeleton />
+                    </div>
+                </div>
+                <CardModalActions.Skeleton />
+            </div>
+        </>
     );
 };

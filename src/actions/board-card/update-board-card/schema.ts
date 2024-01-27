@@ -1,12 +1,16 @@
 import { z } from "zod";
 
 export const UpdateBoardCardSchema = z.object({
-    title: z.string({
-        required_error: "Title is required",
-        invalid_type_error: "Title is required"
-    }).min(3, {
-        message: "Title is too short"
-    }),
+    id: z.string(),
+    boardId: z.string(),
+    title: z.optional(
+        z.string({
+            required_error: "Title is required",
+            invalid_type_error: "Title is required"
+        }).min(3, {
+            message: "Title is too short"
+        })
+    ),
     description: z.optional(
         z.string({
             required_error: "Description is required",
@@ -14,7 +18,5 @@ export const UpdateBoardCardSchema = z.object({
         }).min(3, {
             message: "Description is too short"
         }),
-    ),
-    id: z.string(),
-    boardId: z.string()
-})
+    )
+});
