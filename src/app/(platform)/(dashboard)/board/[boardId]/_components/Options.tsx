@@ -1,6 +1,6 @@
 "use client";
 
-import { MoreHorizontal, X } from "lucide-react";
+import { MoreHorizontal, Trash, X, Clipboard } from "lucide-react";
 import { toast } from "sonner";
 
 import { 
@@ -12,21 +12,20 @@ import {
 import { Button } from "@/components/ui/button";
 import { deleteBoard } from "@/actions/board/delete";
 import { useAction } from "@/hooks/useActions";
+import { copyBoard } from "@/actions/board/copy";
 
 interface BoardOptionsProps {
-    id: string
+    boardId: string
 }
 
-export const BoardOptions = ({ id }: BoardOptionsProps) => {
-    const {  execute, isLoading } = useAction(deleteBoard, {
-        onError: (error) => {
-            toast.error(error);
-        }
+export const BoardOptions = ({ boardId }: BoardOptionsProps) => {
+    const {  execute: destroyBoard, isLoading: isDeleting } = useAction(deleteBoard, {
+        onError: (error) => toast.error(error)
     });
 
-    const onDelete = () => {
-        execute({ id });
-    }
+    const { execute: cloneBoard, isLoading: isCopying } = useAction(copyBoard, {
+        onError: (error) => toast.error(error)
+    });
 
     return (
         <Popover>
@@ -41,7 +40,7 @@ export const BoardOptions = ({ id }: BoardOptionsProps) => {
                 className="px-0 pt-3 pb-3" 
             >
                 <div className="text-sm font-medium text-center text-neutral-600 pb-4">
-                    Board actions
+                    Settings
                 </div>
                 <PopoverClose asChild>
                     <Button 
@@ -51,14 +50,26 @@ export const BoardOptions = ({ id }: BoardOptionsProps) => {
                         <X className="h-4 w-4"/>
                     </Button>
                 </PopoverClose>
-                <Button
-                    variant="ghost"
-                    onClick={onDelete}
-                    disabled={isLoading}
-                    className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
-                >
-                    Delete board
-                </Button>
+                <div className="flex flex-col items-center justify-center space-y-3">
+                    <Button
+                        variant="gray"
+                        onClick={() => cloneBoard({ boardId })}
+                        disabled={isCopying}
+                        className="rounded-sm w-[80%] h-auto p-2 px-5 font-normal text-sm"
+                    >
+                        <Clipboard className="h-4 w-4 mr-2" />
+                        Copy board
+                    </Button>
+                    <Button
+                        variant="destructive"
+                        onClick={() => destroyBoard({ boardId })}
+                        disabled={isDeleting}
+                        className="rounded-sm w-[80%] h-auto p-2 px-5 font-normal text-sm"
+                    >
+                        <Trash className="h-4 w-4 mr-2" />
+                        Delete board
+                    </Button>
+                </div>
             </PopoverContent>
         </Popover>
     );

@@ -23,14 +23,14 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     }
 
     const isPro = await checkSubscription();
-    const { id } = data;
+    const { boardId } = data;
 
     let board;
 
     try {
         board = await db.board.delete({
             where: {
-                id, 
+                id: boardId, 
                 orgId
             }
         });
