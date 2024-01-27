@@ -2,11 +2,13 @@
 
 import { auth } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
+import { ENTITY_TYPE, ACTION } from "@prisma/client";
 
 import type { InputType, ReturnType } from "./types";
 import { db } from "@/lib/db";
 import { createSafeAction } from "@/lib/create-safe-action";
 import { UpdateBoardCardSchema } from "./schema";
+import { createAuditLog } from "@/lib/create-audit-log";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
     const { userId, orgId } = auth();
@@ -19,10 +21,10 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
     const { id, boardId, ...values } = data;
 
-    let card;
+    let boardCard;
 
     try {
-        card = await db.boardCard.update({
+        boardCard = await db.boardCard.update({
             where: {
                 id,
                 boardList: {
@@ -34,7 +36,14 @@ const handler = async (data: InputType): Promise<ReturnType> => {
             data: {
                 ...values
             }
-        })
+        });
+
+        await createAuditLog({
+            entityId: boardCard.id,
+            entityTitle: boardCard.title,
+            entityType: ENTITY_TYPE.CARD,
+            action: ACTION.UPDATE
+        });
     } catch (error) {
         return {
             error: `Internal Server Error - Failed to update card`
@@ -42,7 +51,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     }
 
     revalidatePath(`/board/${boardId}`);
-    return { data: card };
+    return { data: boardCard };
 }
 
 export const updateBoardCard = createSafeAction(UpdateBoardCardSchema, handler);
