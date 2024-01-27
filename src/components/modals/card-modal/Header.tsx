@@ -23,7 +23,12 @@ export const CardModalHeader = ({ card }: CardModalHeaderProps) => {
         onSuccess: ({ title }) => {
             queryClient.invalidateQueries({
                 queryKey: ["card", card.id]
-            })
+            });
+
+            queryClient.invalidateQueries({
+                queryKey: ["card-logs", card.id]
+            });
+
             setTitle(title);
             toast.success(`Card renamed to "${title}"`)
         },

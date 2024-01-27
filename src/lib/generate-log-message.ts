@@ -3,15 +3,14 @@ import  { ACTION, type AuditLog } from "@prisma/client"
 export const generateLogMessage = (log: AuditLog) => {
     const { action, entityType, entityTitle} = log;
 
-    let messagePrefix = 'unknown';
-    switch(action) {
+    switch (action) {
         case ACTION.CREATE:
-            messagePrefix = 'created';
+          return `created ${entityType.toLowerCase()} "${entityTitle}"`;
         case ACTION.UPDATE:
-            messagePrefix = 'updated';
+          return `updated ${entityType.toLowerCase()} "${entityTitle}"`;
         case ACTION.DELETE:
-            messagePrefix = 'deleted';
+          return `deleted ${entityType.toLowerCase()} "${entityTitle}"`;
+        default:
+          return `unknown action ${entityType.toLowerCase()} "${entityTitle}"`;
     }
-
-    return `${messagePrefix} ${entityType.toLocaleLowerCase()} "${entityTitle}"`
 }
