@@ -4,10 +4,10 @@ import { type ElementRef, useRef, useState } from "react";
 import { Draggable, Droppable } from "@hello-pangea/dnd"
 
 import type { BoardListWithCards } from "@/types";
-import { BoardListHeader } from "./BoardListHeader";
-import { BoardCardForm } from "./BoardCardForm";
+import { BoardListHeader } from "./ListHeader";
+import { BoardCardForm } from "./CardForm";
 import { cn } from "@/lib/utils";
-import { BoardCardItem } from "./BoardCardItem";
+import { BoardCardItem } from "./CardItem";
 
 interface BoardListItemProps {
     boardList: BoardListWithCards;

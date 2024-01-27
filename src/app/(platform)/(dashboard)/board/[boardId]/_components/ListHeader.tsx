@@ -8,7 +8,7 @@ import { useEditingFormInput } from "@/hooks/useEditingFormInput";
 import { FormInput } from "@/components/forms/FormInput";
 import { useAction } from "@/hooks/useActions";
 import { updateBoardList } from "@/actions/board-list/update";
-import { BoardListOptions } from "./BoardListOptions";
+import { BoardListOptions } from "./ListOptions";
 
 interface BoardListHeaderProps {
     boardList: BoardList

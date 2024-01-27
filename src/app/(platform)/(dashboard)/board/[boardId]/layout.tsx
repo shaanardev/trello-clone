@@ -3,7 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import type { PropsWithChildren } from "react";
 
 import { db } from "@/lib/db";
-import { BoardNavbar } from "./_components/BoardNavbar";
+import { BoardNavbar } from "./_components/Navbar";
 
 interface Params {
     boardId: string;

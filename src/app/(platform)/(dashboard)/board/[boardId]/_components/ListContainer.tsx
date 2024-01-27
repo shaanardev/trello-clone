@@ -5,8 +5,8 @@ import { DragDropContext, type DropResult, Droppable } from "@hello-pangea/dnd"
 import { toast } from "sonner";
 
 import type { BoardListWithCards } from "@/types";
-import { BoardListForm } from "./BoardListForm";
-import { BoardListItem } from "./BoardListItem";
+import { BoardListForm } from "./ListForm";
+import { BoardListItem } from "./ListItem";
 import { useAction } from "@/hooks/useActions";
 import { updateBoardListOrder } from "@/actions/board-list/update-order";
 import { updateBoardCardOrder } from "@/actions/board-card/update-order";

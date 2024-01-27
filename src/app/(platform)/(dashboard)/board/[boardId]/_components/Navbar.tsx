@@ -1,7 +1,7 @@
 import { type Board } from "@prisma/client";
 
-import { BoardTitleForm } from "./BoardTitleForm";
-import { BoardOptions } from "./BoardOptions";
+import { BoardTitleForm } from "./TitleForm";
+import { BoardOptions } from "./Options";
 
 interface BoardNavbarProps {
     board: Board
