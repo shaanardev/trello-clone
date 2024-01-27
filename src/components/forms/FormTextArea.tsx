@@ -15,6 +15,7 @@ interface FormTextAreaProps {
     defaultValue?: string;
     required?: boolean;
     disabled?: boolean;
+    resize?: boolean,
     errors?: Record<string, string[] | undefined>;
     className?: string;
     onClick?: () => void;
@@ -29,6 +30,7 @@ export const FormTextarea = forwardRef<HTMLTextAreaElement, FormTextAreaProps>((
     defaultValue,
     required,
     disabled,
+    resize = false,
     errors,
     className,
     onClick,
@@ -60,7 +62,8 @@ export const FormTextarea = forwardRef<HTMLTextAreaElement, FormTextAreaProps>((
                     onBlur={onBlur}
                     onKeyDown={onKeyDown}
                     className={cn(
-                        "resize-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 focus:ring-0 outline-none shadow-sm",
+                        "focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 focus:ring-0 outline-none shadow-sm",
+                        resize ? "" : "resize-none",
                         className
                     )}
                     aria-describedby={`${id}-error`}

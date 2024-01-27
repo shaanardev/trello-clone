@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef, type ElementRef, useState } from "react";
-import { AlignLeft } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { AlignLeft, Sparkles } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import { useEventListener, useOnClickOutside } from "usehooks-ts";
+import { useOnClickOutside } from "usehooks-ts";
 import { toast } from "sonner";
 
 import type { BoardCardWithList } from "@/types";
@@ -14,6 +14,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { updateBoardCard } from "@/actions/board-card/update";
 import { useAction } from "@/hooks/useActions";
+import { type GenerateCardDescriptionType } from "@/lib/validators/generate-card-description";
+import { useAITokensContext } from "@/components/providers/AITokensProvider";
+import { MAX_FREE_AI_TOKENS } from "@/constants/limits";
+import { useEditingFormInput } from "@/hooks/useEditingFormInput";
 
 interface CardModalDescriptionProps {
     card: BoardCardWithList
@@ -22,9 +26,21 @@ interface CardModalDescriptionProps {
 export const CardModalDescription = ({ card }: CardModalDescriptionProps) => {
     const queryClient = useQueryClient();
     const params = useParams();
+    const aiTokens = useAITokensContext();
+
+    const [text, setText] = useState(card.description);
+
+    const clearTextArea = () => {
+        setText(card.description);
+    }
+
+    const [formRef, textareaRef, isEditing, _, enableEditing, disableEditing] = useEditingFormInput<HTMLTextAreaElement>({
+        onEnableEditing: () => setTimeout(() => textareaRef?.current?.focus()),
+        onDisableEditing: clearTextArea
+    });
 
     const { execute, fieldErrors } = useAction(updateBoardCard, {
-        onSuccess: ({ title }) => {
+        onSuccess: ({ title, description }) => {
             queryClient.invalidateQueries({
                 queryKey: ["card", card.id]
             });
@@ -35,31 +51,46 @@ export const CardModalDescription = ({ card }: CardModalDescriptionProps) => {
 
             toast.success(`Card "${title}" updated`);
             disableEditing();
+            setText(description);
         },
         onError: (error) => toast.error(error)
     });
+
+    const { mutate: generateDescription, isPending } = useMutation({
+        mutationFn: async ({cardId, title, description}: GenerateCardDescriptionType) => {
+            const res = await fetch('/api/ai', {
+                method: "POST",
+                body: JSON.stringify({ cardId, title, description})
+            });
+
+            if (!res.ok) {
+                throw new Error("Failed to generate description");
+            }
+
+            return res.body;
+        },
+        onSuccess: async (stream) => {
+            if (!stream) {
+                return toast.error("There was a problem generating your description");
+            };
+
+            const reader = stream.getReader()
+            const decoder = new TextDecoder()
+            let done = false
+            let accResponse = ''
+
+            while (!done) {
+                const { value, done: doneReading } = await reader.read()
+                done = doneReading
+                const chunkValue = decoder.decode(value)
+        
+                accResponse += chunkValue
+                setText(accResponse);
+            }
+        },
+        onError: ({ message }) => toast.error(message)
+    });
  
-    const textareaRef = useRef<ElementRef<"textarea">>(null);
-    const formRef = useRef<ElementRef<"form">>(null);
-
-    const [isEditing, setIsEditing] = useState<boolean>(false);
-
-    const enableEditing = () => {
-        setIsEditing(true);
-        setTimeout(() => {
-            textareaRef?.current?.focus();
-        })
-    }
-
-    const disableEditing = () => setIsEditing(false);
-
-    const onKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Escape") {
-            disableEditing();
-        };
-    };
-    
-    useEventListener("keydown", onKeyDown);
     useOnClickOutside(formRef, disableEditing);
 
     const onSubmit = (formData: FormData) => {
@@ -67,8 +98,10 @@ export const CardModalDescription = ({ card }: CardModalDescriptionProps) => {
         const boardId = params.boardId as string;
         
         execute({ id: card.id, boardId, description });
-    }
+    };
 
+    const onGenerate = () => generateDescription({cardId: card.id, title: card.title, description: card.description});
+    
     return (
         <div className="flex items-start gap-x-3 w-full">
             <AlignLeft className="h-5 w-5 mt-0.5 text-neutral-700" />
@@ -86,14 +119,26 @@ export const CardModalDescription = ({ card }: CardModalDescriptionProps) => {
                             id="description"
                             ref={textareaRef}
                             placeholder="Add a more detailed description"
-                            defaultValue={card.description || undefined}
+                            defaultValue={text || undefined}
                             errors={fieldErrors}
+                            onBlur={clearTextArea}
+                            resize
                             className="w-full mt-2"
                         />
                         <div className="flex items-center gap-x-2">
                             <FormSubmitButton>
                                 Save
                             </FormSubmitButton>
+                            <Button
+                                type="button"
+                                onClick={onGenerate}
+                                disabled={aiTokens === MAX_FREE_AI_TOKENS || isPending}
+                                size="sm"
+                                variant="gray"
+                            >
+                                <Sparkles className="w-4 h-4 mr-2"/>
+                                Generate
+                            </Button>
                             <Button
                                 type="button"
                                 onClick={disableEditing}
@@ -108,9 +153,9 @@ export const CardModalDescription = ({ card }: CardModalDescriptionProps) => {
                     <div
                         role="button"
                         onClick={enableEditing}
-                        className="min-h-[78px] bg-neutral-300 text-sm font-medium py-3 px-3.5 rounded-md"
+                        className="min-h-[80px] bg-neutral-100 text-sm py-3 px-3.5 rounded-md"
                     >
-                        {card.description || "Add a more detailed description"}
+                        {text || "Add a more detailed description"}
                     </div>
                 )}
             </div>

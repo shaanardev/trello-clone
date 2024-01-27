@@ -17,11 +17,9 @@ export const BoardListForm = () => {
     const router = useRouter();
     const params = useParams();
     
-    const [formRef, inputRef, isEditing, _, enableEditing, disableEditing] = useEditingFormInput({
+    const [formRef, inputRef, isEditing, _, enableEditing, disableEditing] = useEditingFormInput<HTMLInputElement>({
         onEnableEditing: () => {
-            setTimeout(() => {
-                inputRef.current?.focus();
-            });
+            setTimeout(() => inputRef?.current?.focus());
         }
     });
 

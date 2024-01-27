@@ -27,7 +27,7 @@ export const BoardTitleForm = ({ board }: BoardTitleFormProps) => {
     });
 
     const [title, setTitle] = useState<string>(board.title);
-    const [formRef, inputRef, isEditing, _, enableEditing, disableEditing] = useEditingFormInput({
+    const [formRef, inputRef, isEditing, _, enableEditing, disableEditing] = useEditingFormInput<HTMLInputElement>({
         onEnableEditing: () => {
             setTimeout(() => {
                 inputRef.current?.focus();

@@ -6,9 +6,9 @@ interface UseEditingFormInputOptions {
     onDisableEditing?: () => void;
 }
 
-export const useEditingFormInput = (options?: UseEditingFormInputOptions) => {
+export const useEditingFormInput = <T extends HTMLElement = HTMLInputElement>(options?: UseEditingFormInputOptions) => {
     const formRef = useRef<ElementRef<"form">>(null);
-    const inputRef = useRef<ElementRef<"input">>(null);
+    const inputRef = useRef<T>(null);
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
 

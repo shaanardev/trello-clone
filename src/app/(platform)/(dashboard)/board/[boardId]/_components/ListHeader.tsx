@@ -16,7 +16,7 @@ interface BoardListHeaderProps {
 }
 
 export const BoardListHeader = ({ boardList, onAddCard }: BoardListHeaderProps) => {
-    const [formRef, inputRef, isEditing, _, enableEditing, disableEditing] = useEditingFormInput({
+    const [formRef, inputRef, isEditing, _, enableEditing, disableEditing] = useEditingFormInput<HTMLInputElement>({
         onEnableEditing: () => {
             setTimeout(() => {
                 inputRef.current?.focus();

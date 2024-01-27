@@ -21,7 +21,7 @@ export const BoardListItem = ({ boardList, index }: BoardListItemProps) => {
 
     const enableEditing = () => {
         setIsEditing(true);
-        textareaRef?.current?.focus();
+        setTimeout(() => textareaRef?.current?.focus());
     }
 
     const disableEditing = () => setIsEditing(false);
