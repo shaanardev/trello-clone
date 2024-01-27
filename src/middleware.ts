@@ -2,7 +2,7 @@ import { authMiddleware, redirectToSignIn  } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
  
 export default authMiddleware({
-    publicRoutes: ["/"],
+    publicRoutes: ["/", "/api/webhook"],
     afterAuth(auth, req) {
         const { userId, orgId, isPublicRoute } = auth;
         const { url } = req;

@@ -1,18 +1,16 @@
 "use client"
 
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 
 import { useMobileSidebar } from "@/hooks/useMobileSidebar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import Sidebar from "./Sidebar";
-import { useIsMounted } from "usehooks-ts";
 
 export const MobileSidebar = () => {
     const pathName = usePathname();
-    const isMounted = useIsMounted();
 
     const isOpen = useMobileSidebar((state) => state.isOpen)
     const onOpen = useMobileSidebar((state) => state.onOpen)
@@ -22,8 +20,13 @@ export const MobileSidebar = () => {
         onClose()
     }, [pathName, onClose]);
 
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+  
     if (!isMounted) {
-        // still running on the server despite use client directive
         return null;
     }
 

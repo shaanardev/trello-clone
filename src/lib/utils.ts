@@ -12,3 +12,6 @@ export function startCase(str: string) {
 	.map(word => word.charAt(0).toUpperCase() + word.slice(1))
 	.join(' ');
 }
+
+export const absoluteURL = (path: string) => `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
+

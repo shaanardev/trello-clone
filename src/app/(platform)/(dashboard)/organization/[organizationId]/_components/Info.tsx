@@ -6,7 +6,11 @@ import Image from "next/image";
 
 import { Skeleton } from "@/components/ui/skeleton";
 
-export const OrgInfo = () => {
+interface OrgInfoProps {
+    isPro: boolean
+}
+
+export const OrgInfo = ({ isPro }: OrgInfoProps) => {
     const { organization, isLoaded } = useOrganization();
 
     if (!isLoaded) {
@@ -31,7 +35,7 @@ export const OrgInfo = () => {
                 </p>
                 <div className="flex items-center text-xs text-muted-foreground">
                     <CreditCard className="h-3 w-3 mr-2"/>
-                    Free
+                    {isPro ? "Pro": "Free"}
                 </div>
             </div>
         </div>
