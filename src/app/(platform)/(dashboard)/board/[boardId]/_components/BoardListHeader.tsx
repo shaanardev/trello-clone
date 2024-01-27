@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useEditingFormInput } from "@/hooks/useEditingFormInput";
 import { FormInput } from "@/components/forms/FormInput";
 import { useAction } from "@/hooks/useActions";
-import { updateBoardList } from "@/actions/board-list/update-board-list";
+import { updateBoardList } from "@/actions/board-list/update";
 import { BoardListOptions } from "./BoardListOptions";
 
 interface BoardListHeaderProps {

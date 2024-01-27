@@ -7,8 +7,8 @@ import { useParams } from "next/navigation";
 import type { BoardCardWithList } from "@/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { copyBoardCard } from "@/actions/board-card/copy-board-card";
-import { deleteBoardCard } from "@/actions/board-card/delete-board-card";
+import { copyBoardCard } from "@/actions/board-card/copy";
+import { deleteBoardCard } from "@/actions/board-card/delete";
 import { useAction } from "@/hooks/useActions";
 import { useCardModal } from "@/hooks/useCardModal";
 

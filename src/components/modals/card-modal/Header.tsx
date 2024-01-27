@@ -10,7 +10,7 @@ import { FormInput } from "@/components/forms/FormInput";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { BoardCardWithList } from "@/types";
 import { useAction } from "@/hooks/useActions";
-import { updateBoardCard } from "@/actions/board-card/update-board-card";
+import { updateBoardCard } from "@/actions/board-card/update";
 
 interface CardModalHeaderProps {
     card: BoardCardWithList

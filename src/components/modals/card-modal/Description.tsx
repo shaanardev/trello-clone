@@ -12,7 +12,7 @@ import { FormTextarea } from "@/components/forms/FormTextArea";
 import { FormSubmitButton } from "@/components/forms/FormSubmitButton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { updateBoardCard } from "@/actions/board-card/update-board-card";
+import { updateBoardCard } from "@/actions/board-card/update";
 import { useAction } from "@/hooks/useActions";
 
 interface CardModalDescriptionProps {

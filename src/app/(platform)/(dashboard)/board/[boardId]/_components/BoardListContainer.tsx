@@ -8,8 +8,8 @@ import type { BoardListWithCards } from "@/types";
 import { BoardListForm } from "./BoardListForm";
 import { BoardListItem } from "./BoardListItem";
 import { useAction } from "@/hooks/useActions";
-import { updateBoardListOrder } from "@/actions/board-list/update-board-list-order";
-import { updateBoardCardOrder } from "@/actions/board-card/update-board-card-order";
+import { updateBoardListOrder } from "@/actions/board-list/update-order";
+import { updateBoardCardOrder } from "@/actions/board-card/update-order";
 
 interface BoardListContainerProps {
     boardId: string;
