@@ -5,13 +5,11 @@ import { CreditCard } from "lucide-react";
 import Image from "next/image";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { useSubscriptionContext } from "@/components/providers/SubscriptionProvider";
 
-interface OrgInfoProps {
-    isPro: boolean
-}
-
-export const OrgInfo = ({ isPro }: OrgInfoProps) => {
+export const OrgInfo = () => {
     const { organization, isLoaded } = useOrganization();
+    const isPro = useSubscriptionContext();
 
     if (!isLoaded) {
         return (

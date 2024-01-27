@@ -6,13 +6,12 @@ import { stripeRedirect } from "@/actions/stripe/redirect";
 import { Button } from "@/components/ui/button";
 import { useAction } from "@/hooks/useActions";
 import { useProModal } from "@/hooks/useProModal";
+import { useSubscriptionContext } from "@/components/providers/SubscriptionProvider";
 
-interface SubscriptionButtonProps {
-    isPro: boolean
-}
-
-export const SubscriptionButton = ({ isPro }: SubscriptionButtonProps) => {
+export const SubscriptionButton = () => {
     const proModal = useProModal();
+    const isPro = useSubscriptionContext();
+
     const { execute, isLoading } = useAction(stripeRedirect, {
         onSuccess: (url) => window.location.href = url,
         onError: (error) => toast.error(error)
