@@ -10,7 +10,6 @@ export const checkSubscription = async () => {
     if (!orgId) {
         return false;
     }
-
     const orgSubscription = await db.orgSubscription.findUnique({
         where: {
             orgId

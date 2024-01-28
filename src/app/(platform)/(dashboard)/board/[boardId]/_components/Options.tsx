@@ -73,8 +73,8 @@ export const BoardOptions = ({ boardId }: BoardOptionsProps) => {
     });
 
     const { data: aiTokens } = useQuery<number>({
-        queryKey: ["ai-tokens"],
-        queryFn: () => fetcher(`/api/ai/tokens`)
+        queryKey: ["tokens"],
+        queryFn: () => fetcher(`/api/tokens`)
     });
 
     const {  execute: destroyBoard, isLoading: isDeleting } = useAction(deleteBoard, {

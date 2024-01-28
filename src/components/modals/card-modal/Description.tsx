@@ -47,7 +47,7 @@ export const CardModalDescription = ({ card }: CardModalDescriptionProps) => {
             });
 
             queryClient.invalidateQueries({
-                queryKey: ["ai-tokens"]
+                queryKey: ["tokens"]
             });
 
 
@@ -66,6 +66,9 @@ export const CardModalDescription = ({ card }: CardModalDescriptionProps) => {
             });
 
             if (!res.ok) {
+                if (res.status === 429) {
+                    throw new Error("Too many AI requests, please wait 5 minutes and try again.");
+                }
                 throw new Error("Failed to generate description");
             }
 
@@ -120,7 +123,7 @@ export const CardModalDescription = ({ card }: CardModalDescriptionProps) => {
                         <FormTextarea 
                             id="description"
                             ref={textareaRef}
-                            placeholder="Add a more detailed description"
+                            placeholder={isPending ? "Generating..." : "Add a more detailed description"}
                             defaultValue={text || undefined}
                             errors={fieldErrors}
                             onBlur={clearTextArea}

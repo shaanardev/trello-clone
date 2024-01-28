@@ -8,7 +8,7 @@ import { Hint } from "@/components/Hint";
 import { FormPopOver } from "@/components/forms/FormPopOver";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MAX_FREE_BOARDS } from "@/constants/limits";
-import { getAvailableBoardCount } from "@/lib/org/board-limit";
+import { availableBoardCount } from "@/lib/org-limit/board-limit";
 import { checkSubscription } from "@/lib/subscription";
 
 export const BoardList = async () => {
@@ -27,7 +27,7 @@ export const BoardList = async () => {
         }
     });
 
-    const availableCount = await getAvailableBoardCount();
+    const availableCount = await availableBoardCount();
     const isPro = await checkSubscription();
 
     return (

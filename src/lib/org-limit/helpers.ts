@@ -1,9 +1,13 @@
 import { auth } from "@clerk/nextjs";
 
-import { db } from "@/lib/db";
-import { MAX_FREE_BOARDS } from "@/constants/limits";
+import { db } from "../db";
+import { OrgLimit } from "@prisma/client";
 
-const modifyAvailableAITokens = async (modifyCountAction: (count: number) => number) => {
+type Key = keyof OrgLimit
+type OmittedKeys = "id" | "orgId" | "createdAt" | "updatedAt";
+type LimitKey =  Exclude<Key, OmittedKeys>;
+
+export const modifyAvailableLimit = async (modifyCountAction: (count: number) => number, limitKey: LimitKey) => {
     const { orgId } = auth();
 
     if (!orgId) {
@@ -22,23 +26,20 @@ const modifyAvailableAITokens = async (modifyCountAction: (count: number) => num
                 orgId
             },
             data: {
-                aiTokens: modifyCountAction(orgLimit.aiTokens)
+                [limitKey]: modifyCountAction(orgLimit[limitKey])
             }
         });
     } else {
         await db.orgLimit.create({
             data: {
                 orgId,
-                aiTokens: 1
+                [limitKey]: 1
             }
         });
     }
-}
+};
 
-export const incrementAvailableAITokens = () => modifyAvailableAITokens(count => count + 1);
-export const decreaseAvailableAITokens = () => modifyAvailableAITokens(count => Math.max(0, count - 1));
-
-export const hasAvailableAITokens = async () => {
+export const hasReachedLimit = async (key: LimitKey, maximumLimit: number) => {
     const { orgId } = auth();
 
     if (!orgId) {
@@ -51,10 +52,11 @@ export const hasAvailableAITokens = async () => {
         }
     });
 
-    return !orgLimit || orgLimit.aiTokens < MAX_FREE_BOARDS;
-};
+    return !orgLimit || orgLimit[key] < maximumLimit;
+}
 
-export const getAvailableAITokens = async () => {
+
+export const getAvailableLimit = async (key: LimitKey) => {
     const { orgId } = auth();
 
     if (!orgId) {
@@ -67,5 +69,5 @@ export const getAvailableAITokens = async () => {
         }
     });
 
-    return orgLimit?.aiTokens ?? 0;
+    return orgLimit?.[key] ?? 0;
 };

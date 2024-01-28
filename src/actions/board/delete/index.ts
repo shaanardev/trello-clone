@@ -10,7 +10,7 @@ import { db } from "@/lib/db";
 import { createSafeAction } from "@/lib/create-safe-action";
 import { DeleteBoardSchema } from "./schema";
 import { createAuditLog } from "@/lib/create-audit-log";
-import { decreaseAvailableBoardCount } from "@/lib/org/board-limit";
+import { decreaseAvailableBoardCount } from "@/lib/org-limit/board-limit";
 import { checkSubscription } from "@/lib/subscription";
 
 const handler = async (data: InputType): Promise<ReturnType> => {

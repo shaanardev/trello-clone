@@ -5,15 +5,31 @@ import { OpenAIStream, StreamingTextResponse } from 'ai';
 import { GenerateCardDescriptionSchema } from "@/lib/validators/generate-card-description";
 import { db } from "@/lib/db";
 import { checkSubscription } from "@/lib/subscription";
-import { incrementAvailableAITokens } from "@/lib/org/ai-tokens-limit";
+import { hasReachedMaximumTokens, incrementAvailableAITokens } from "@/lib/org-limit/ai-tokens-limit";
 import { openai } from "@/lib/openai";
+import { ratelimits } from "@/lib/rate-limiters";
 
 export const POST = async (req: NextRequest) => {
-    
     const { userId, orgId} = auth();
     
     if (!userId || !orgId) {
         return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const isPro = await checkSubscription();
+
+    const ip = req.ip ?? '127.0.0.1';
+    const limiter = isPro ? ratelimits.paid : ratelimits.free;
+    const { success  } = await limiter.limit(ip);
+    if (!success) {
+        return new NextResponse('Too Many Requests', { status: 429 });
+    };
+
+    const canGenerateDescription = await hasReachedMaximumTokens();
+
+    if (!canGenerateDescription && !isPro) {
+        console.log("Free limit reached");
+        return new NextResponse("Bad Request", { status: 400 });
     }
 
     const body = await req.json();
@@ -47,13 +63,9 @@ export const POST = async (req: NextRequest) => {
         return new NextResponse("Not Fund", { status: 404 });
     }
 
-    const isPro = await checkSubscription();
-
     if (!isPro) {
         await incrementAvailableAITokens();
     }
-
-    //TODO: check if maximum has reached
 
     const response = await openai.chat.completions.create({
         model: 'gpt-3.5-turbo',
