@@ -16,6 +16,7 @@ import { updateBoardCard } from "@/actions/board-card/update";
 import { useAction } from "@/hooks/useActions";
 import { type GenerateCardDescriptionType } from "@/lib/validators/generate-card-description";
 import { useEditingFormInput } from "@/hooks/useEditingFormInput";
+import { CARD_LOGS_QK, CARD_QK, TOKENS_QK } from "@/constants/query-keys";
 
 interface CardModalDescriptionProps {
 	card: BoardCardWithList;
@@ -31,24 +32,23 @@ export const CardModalDescription = ({ card }: CardModalDescriptionProps) => {
 		setText(card.description);
 	};
 
-	const [formRef, inputRef, isEditing, _, enableEditing, disableEditing] =
-		useEditingFormInput<HTMLTextAreaElement>({
-			onEnableEditing: () => setTimeout(() => inputRef?.current?.focus()),
-			onDisableEditing: clearTextArea,
-		});
-
+	const [formRef, inputRef, isEditing, _, enableEditing, disableEditing] = useEditingFormInput<HTMLTextAreaElement>({
+		onEnableEditing: () => setTimeout(() => inputRef?.current?.focus()),
+		onDisableEditing: clearTextArea,
+	});
+	
 	const { execute, fieldErrors } = useAction(updateBoardCard, {
 		onSuccess: ({ title, description }) => {
 			queryClient.invalidateQueries({
-				queryKey: ["card", card.id],
+				queryKey: [CARD_QK, card.id],
 			});
 
 			queryClient.invalidateQueries({
-				queryKey: ["card-logs", card.id],
+				queryKey: [CARD_LOGS_QK, card.id],
 			});
 
 			queryClient.invalidateQueries({
-				queryKey: ["tokens"],
+				queryKey: [TOKENS_QK],
 			});
 
 			toast.success(`Card "${title}" updated`);

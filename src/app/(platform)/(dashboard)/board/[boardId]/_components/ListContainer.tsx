@@ -38,8 +38,7 @@ export const BoardListContainer = ({
 		onError: (error) => toast.error(error),
 	});
 
-	const [orderedData, setOrderedData] =
-		useState<BoardListWithCards[]>(boardLists);
+	const [orderedData, setOrderedData] = useState<BoardListWithCards[]>(boardLists);
 
 	useEffect(() => {
 		setOrderedData(boardLists);

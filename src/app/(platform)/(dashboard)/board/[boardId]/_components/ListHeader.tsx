@@ -1,6 +1,6 @@
 "use client";
 
-import { BoardList } from "@prisma/client";
+import type { BoardList } from "@prisma/client";
 import { useState } from "react";
 import { toast } from "sonner";
 

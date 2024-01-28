@@ -20,6 +20,7 @@ import { useSubscriptionContext } from "@/components/providers/SubscriptionProvi
 import { Hint } from "@/components/Hint";
 import { MAX_FREE_AI_TOKENS } from "@/constants/limits";
 import { fetcher } from "@/lib/fetcher";
+import { TOKENS_QK } from "@/constants/query-keys";
 
 const calculateTimeLeft = () => {
 	const now = new Date();
@@ -79,7 +80,7 @@ export const BoardOptions = ({ boardId }: BoardOptionsProps) => {
 	});
 
 	const { data: aiTokens } = useQuery<number>({
-		queryKey: ["tokens"],
+		queryKey: [TOKENS_QK],
 		queryFn: () => fetcher(`/api/tokens`),
 	});
 

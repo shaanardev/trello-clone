@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import type { BoardCardWithList } from "@/types";
 import { useAction } from "@/hooks/useActions";
 import { updateBoardCard } from "@/actions/board-card/update";
+import { CARD_LOGS_QK, CARD_QK } from "@/constants/query-keys";
 
 interface CardModalHeaderProps {
 	card: BoardCardWithList;
@@ -22,11 +23,11 @@ export const CardModalHeader = ({ card }: CardModalHeaderProps) => {
 	const { execute } = useAction(updateBoardCard, {
 		onSuccess: ({ title }) => {
 			queryClient.invalidateQueries({
-				queryKey: ["card", card.id],
+				queryKey: [CARD_QK, card.id],
 			});
 
 			queryClient.invalidateQueries({
-				queryKey: ["card-logs", card.id],
+				queryKey: [CARD_LOGS_QK, card.id],
 			});
 
 			setTitle(title);

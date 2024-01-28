@@ -19,8 +19,7 @@ const Sidebar = ({ storageKey = "t-sidebar-state" }: SidebarProps) => {
 		storageKey,
 		{},
 	);
-	const { organization: activeOrg, isLoaded: isOrgLoaded } =
-		useOrganization();
+	const { organization: activeOrg, isLoaded: isOrgLoaded } = useOrganization();
 	const { userMemberships, isLoaded: isOrgListLoaded } = useOrganizationList({
 		userMemberships: {
 			infinite: true,

@@ -48,9 +48,7 @@ export const BoardCardForm = forwardRef<
 	useEventListener("keydown", onKeyDown);
 	useOnClickOutside(formRef, disableEditing);
 
-	const onTextareakeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (
-		e,
-	) => {
+	const onTextareakeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
 		if (e.key === "Enter" && !e.shiftKey) {
 			e.preventDefault();
 			formRef.current?.requestSubmit();

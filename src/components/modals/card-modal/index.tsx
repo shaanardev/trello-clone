@@ -11,6 +11,7 @@ import { CardModalHeader } from "./Header";
 import { CardModalDescription } from "./Description";
 import { CardModalActions } from "./Actions";
 import { CardModalActivityLogs } from "./Activity";
+import { CARD_LOGS_QK, CARD_QK } from "@/constants/query-keys";
 
 export const CardModal = () => {
 	const id = useCardModal((state) => state.id);
@@ -18,12 +19,12 @@ export const CardModal = () => {
 	const onClose = useCardModal((state) => state.onClose);
 
 	const { data: card } = useQuery<BoardCardWithList>({
-		queryKey: ["card", id],
+		queryKey: [CARD_QK, id],
 		queryFn: () => fetcher(`/api/cards/${id}`),
 	});
 
 	const { data: activityLogs } = useQuery<AuditLog[]>({
-		queryKey: ["card-logs", id],
+		queryKey: [CARD_LOGS_QK, id],
 		queryFn: () => fetcher(`/api/cards/${id}/logs`),
 	});
 
