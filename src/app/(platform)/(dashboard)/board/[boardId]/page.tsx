@@ -4,49 +4,45 @@ import { redirect } from "next/navigation";
 import { BoardListContainer } from "./_components/ListContainer";
 
 interface Params {
-  boardId: string;
+	boardId: string;
 }
 
 interface BoardIdPageProps {
-  params: Params
+	params: Params;
 }
 
 const BoardIdPage = async ({ params }: BoardIdPageProps) => {
 	const { orgId } = auth();
 
 	if (!orgId) {
-        return redirect("/select-org");
+		return redirect("/select-org");
 	}
 
-	const { boardId} = params;
+	const { boardId } = params;
 	const boardLists = await db.boardList.findMany({
 		where: {
 			boardId: boardId,
 			board: {
-				orgId
+				orgId,
 			},
 		},
 		include: {
 			cards: {
 				orderBy: {
-					order: "asc"
+					order: "asc",
 				},
 			},
 		},
 		orderBy: {
-			order: "asc"
-		}
+			order: "asc",
+		},
 	});
 
-
-    return (
-        <div className="p-4 h-full overflow-x-auto">
-        <BoardListContainer
-			boardId={boardId}
-			boardLists={boardLists}
-        />
-      </div>
-    );
+	return (
+		<div className="h-full overflow-x-auto p-4">
+			<BoardListContainer boardId={boardId} boardLists={boardLists} />
+		</div>
+	);
 };
 
 export default BoardIdPage;

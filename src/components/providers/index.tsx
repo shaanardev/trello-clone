@@ -9,19 +9,19 @@ import { QueryProvider } from "@/components/providers/QueryProvider";
 import { SubscriptionContextProvider } from "@/components/providers/SubscriptionProvider";
 
 interface ProvidersProps extends PropsWithChildren {
-    isPro: boolean;
+	isPro: boolean;
 }
 
 export const Providers = ({ isPro, children }: ProvidersProps) => {
-    return (
-        <ClerkProvider>
-            <QueryProvider>
-                <Toaster richColors />
-                <ModalProvider />
-                <SubscriptionContextProvider isPro={isPro}>
-                    {children}
-                </SubscriptionContextProvider>
-            </QueryProvider>
-        </ClerkProvider>
-    )
-}
+	return (
+		<ClerkProvider>
+			<QueryProvider>
+				<Toaster richColors />
+				<ModalProvider />
+				<SubscriptionContextProvider isPro={isPro}>
+					{children}
+				</SubscriptionContextProvider>
+			</QueryProvider>
+		</ClerkProvider>
+	);
+};

@@ -12,84 +12,83 @@ import { availableBoardCount } from "@/lib/org-limit/board-limit";
 import { checkSubscription } from "@/lib/subscription";
 
 export const BoardList = async () => {
-    const { orgId } = auth();
-    
-    if (!orgId) {
-        return redirect("/select-org");
-    }
+	const { orgId } = auth();
 
-    const boards = await db.board.findMany({
-        where: {
-            orgId
-        },
-        orderBy: {
-            createdAt: "desc"
-        }
-    });
+	if (!orgId) {
+		return redirect("/select-org");
+	}
 
-    const availableCount = await availableBoardCount();
-    const isPro = await checkSubscription();
+	const boards = await db.board.findMany({
+		where: {
+			orgId,
+		},
+		orderBy: {
+			createdAt: "desc",
+		},
+	});
 
-    return (
-        <div className="space-y-4 animate-in fade-in-50 duration-600 ease-in">
-            <div className="flex items-center font-semibold text-lg text-neutral-700">
-                <User2 className="w-6 h-6 mr-2" />
-                Your boards
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                {boards.map((board) => (
-                    <Link
-                        key={board.id}
-                        href={`/board/${board.id}`}
-                        style={{ backgroundImage: `url(${board.imageThumbUrl})` }}
-                        className="group relative aspect-video bg-no-repeat bg-center bg-cover bg-sky-700 rounded-sm h-full w-full p-2 overflow-hidden"
-                    >
-                        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition"/>    
-                        <p className="relative font-semibold text-white">
-                            {board.title}
-                        </p>
-                    </Link>
-                ))}
-                <FormPopOver
-                    sideOffset={10}
-                    side="right"
-                >
-                    <div
-                        role="button"
-                        className="aspect-video relative h-full w-full bg-muted rounded-sm flex flex-col gap-y-1 items-center justify-center
-                        hover:opacity-75 transition
+	const availableCount = await availableBoardCount();
+	const isPro = await checkSubscription();
+
+	return (
+		<div className="duration-600 space-y-4 ease-in animate-in fade-in-50">
+			<div className="flex items-center text-lg font-semibold text-neutral-700">
+				<User2 className="mr-2 h-6 w-6" />
+				Your boards
+			</div>
+			<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+				{boards.map((board) => (
+					<Link
+						key={board.id}
+						href={`/board/${board.id}`}
+						style={{
+							backgroundImage: `url(${board.imageThumbUrl})`,
+						}}
+						className="group relative aspect-video h-full w-full overflow-hidden rounded-sm bg-sky-700 bg-cover bg-center bg-no-repeat p-2"
+					>
+						<div className="absolute inset-0 bg-black/30 transition group-hover:bg-black/40" />
+						<p className="relative font-semibold text-white">
+							{board.title}
+						</p>
+					</Link>
+				))}
+				<FormPopOver sideOffset={10} side="right">
+					<div
+						role="button"
+						className="relative flex aspect-video h-full w-full flex-col items-center justify-center gap-y-1 rounded-sm bg-muted
+                        transition hover:opacity-75
                         "
-                    >
-                        <p className="text-xs">
-                            Create new board
-                        </p>
-                        <span className="text-xs">
-                            {isPro ? "Unlimited" : `${MAX_FREE_BOARDS - availableCount} remaining`}
-                        </span>
-                        <Hint 
-                            description={`Free workspaces can have up to 5 open boards.For unlimited boards upgrade this workspace`}
-                            sideOffset={40}
-                        >
-                            <HelpCircle className="absolute bottom-2 right-2 h-[14px] w-[14px]" />
-                        </Hint>
-                    </div>
-                </FormPopOver>
-            </div>
-        </div>
-    );
+					>
+						<p className="text-xs">Create new board</p>
+						<span className="text-xs">
+							{isPro
+								? "Unlimited"
+								: `${MAX_FREE_BOARDS - availableCount} remaining`}
+						</span>
+						<Hint
+							description={`Free workspaces can have up to 5 open boards.For unlimited boards upgrade this workspace`}
+							sideOffset={40}
+						>
+							<HelpCircle className="absolute bottom-2 right-2 h-[14px] w-[14px]" />
+						</Hint>
+					</div>
+				</FormPopOver>
+			</div>
+		</div>
+	);
 };
 
 BoardList.Skeleton = function SkeletonBoardList() {
-    return (
-        <div className="grid gird-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            <Skeleton className="aspect-video h-full w-full p-2 bg-gray-200" />
-            <Skeleton className="aspect-video h-full w-full p-2 bg-gray-200" />
-            <Skeleton className="aspect-video h-full w-full p-2 bg-gray-200" />
-            <Skeleton className="aspect-video h-full w-full p-2 bg-gray-200" />
-            <Skeleton className="aspect-video h-full w-full p-2 bg-gray-200" />
-            <Skeleton className="aspect-video h-full w-full p-2 bg-gray-200" />
-            <Skeleton className="aspect-video h-full w-full p-2 bg-gray-200" />
-            <Skeleton className="aspect-video h-full w-full p-2 bg-gray-200" />
-        </div>
-    );
+	return (
+		<div className="gird-cols-2 grid gap-4 sm:grid-cols-3 lg:grid-cols-4">
+			<Skeleton className="aspect-video h-full w-full bg-gray-200 p-2" />
+			<Skeleton className="aspect-video h-full w-full bg-gray-200 p-2" />
+			<Skeleton className="aspect-video h-full w-full bg-gray-200 p-2" />
+			<Skeleton className="aspect-video h-full w-full bg-gray-200 p-2" />
+			<Skeleton className="aspect-video h-full w-full bg-gray-200 p-2" />
+			<Skeleton className="aspect-video h-full w-full bg-gray-200 p-2" />
+			<Skeleton className="aspect-video h-full w-full bg-gray-200 p-2" />
+			<Skeleton className="aspect-video h-full w-full bg-gray-200 p-2" />
+		</div>
+	);
 };

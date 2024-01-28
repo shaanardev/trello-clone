@@ -2,7 +2,7 @@
 
 import { auth, currentUser } from "@clerk/nextjs";
 
-import type { InputType, ReturnType } from "./types";
+import type { ReturnType } from "./types";
 import { db } from "@/lib/db";
 import { createSafeAction } from "@/lib/create-safe-action";
 import { StripeRedirectSchema } from "./schema";
@@ -10,7 +10,7 @@ import { absoluteURL } from "@/lib/utils";
 import { stripe } from "@/lib/stripe";
 import { revalidatePath } from "next/cache";
 
-const handler = async (data: InputType): Promise<ReturnType> => {
+const handler = async (): Promise<ReturnType> => {
     const { userId, orgId } = auth();
     const user = await currentUser();
 
@@ -76,6 +76,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
     revalidatePath(`/organization/${orgId}`);
     return { data: url };
-}
+};
 
 export const stripeRedirect = createSafeAction(StripeRedirectSchema, handler);

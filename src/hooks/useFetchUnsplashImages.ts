@@ -7,28 +7,28 @@ export const useFetchUnsplashImages = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
-      const fetchImages = async () => {
-        try {
-            const result = await unsplash.photos.getRandom({
-                collectionIds: ["317099"],
-                count: 9
-            });
-  
-            if (result && result.response) {
-                const newImages = (result.response as Array<Record<string, any>>);
-                setImages(newImages);
-            } else {
-                console.error("Failed to get images from unsplash")
-            }
-        } catch (error) {
-            console.error(error);
-            setImages(defaultImages);
-        } finally {
-            setIsLoading(false);
-        }
-      }
+        const fetchImages = async () => {
+            try {
+                const result = await unsplash.photos.getRandom({
+                    collectionIds: ["317099"],
+                    count: 9
+                });
 
-      fetchImages();
+                if (result && result.response) {
+                    const newImages = (result.response as Array<Record<string, any>>);
+                    setImages(newImages);
+                } else {
+                    console.error("Failed to get images from unsplash")
+                }
+            } catch (error) {
+                console.error(error);
+                setImages(defaultImages);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        fetchImages();
     }, [])
 
     return { images, isLoading };

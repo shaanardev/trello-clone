@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -12,12 +12,12 @@ import Sidebar from "./Sidebar";
 export const MobileSidebar = () => {
     const pathName = usePathname();
 
-    const isOpen = useMobileSidebar((state) => state.isOpen)
-    const onOpen = useMobileSidebar((state) => state.onOpen)
-    const onClose = useMobileSidebar((state) => state.onClose)
+    const isOpen = useMobileSidebar((state) => state.isOpen);
+    const onOpen = useMobileSidebar((state) => state.onOpen);
+    const onClose = useMobileSidebar((state) => state.onClose);
 
     useEffect(() => {
-        onClose()
+        onClose();
     }, [pathName, onClose]);
 
     const [isMounted, setIsMounted] = useState(false);
@@ -25,26 +25,24 @@ export const MobileSidebar = () => {
     useEffect(() => {
         setIsMounted(true);
     }, []);
-  
+
     if (!isMounted) {
         return null;
     }
 
     return (
         <>
-            <Button 
+            <Button
                 variant="ghost"
                 size="sm"
-                onClick={onOpen} 
-                className="block md:hidden mr-2" 
+                onClick={onOpen}
+                className="mr-2 block md:hidden"
             >
-                <Menu className="h-4 w-4"/>
+                <Menu className="h-4 w-4" />
             </Button>
             <Sheet open={isOpen} onOpenChange={onClose}>
-                <SheetContent side="left"className="p-2 pt-10">
-                    <Sidebar
-                        storageKey="t-sidebar-mobile-state"
-                    />
+                <SheetContent side="left" className="p-2 pt-10">
+                    <Sidebar storageKey="t-sidebar-mobile-state" />
                 </SheetContent>
             </Sheet>
         </>

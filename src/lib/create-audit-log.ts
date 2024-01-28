@@ -3,14 +3,14 @@ import { ACTION, ENTITY_TYPE } from "@prisma/client";
 
 import { db } from "@/lib/db";
 
-interface AuditLogParams  {
+interface AuditLogParams {
     entityId: string;
     entityTitle: string;
     entityType: ENTITY_TYPE;
     action: ACTION;
 }
 
-export const createAuditLog = async ({entityId, entityTitle, entityType, action}: AuditLogParams ) => {
+export const createAuditLog = async ({ entityId, entityTitle, entityType, action }: AuditLogParams) => {
     try {
         const { orgId } = auth();
         const user = await currentUser();

@@ -6,65 +6,63 @@ import { db } from "@/lib/db";
 import { BoardNavbar } from "./_components/Navbar";
 
 interface Params {
-    boardId: string;
+	boardId: string;
 }
 
 interface BoardIdLayoutProps extends PropsWithChildren {
-    params: Params
+	params: Params;
 }
 
 export async function generateMetadata({ params }: { params: Params }) {
-    const { orgId } = auth();
-    
-    if (!orgId) {
-        return {
-            title: "Board"
-        }; 
-    }
+	const { orgId } = auth();
 
-    const board = await db.board.findUnique({
-        where: {
-            id: params.boardId,
-            orgId
-        }
-    })
+	if (!orgId) {
+		return {
+			title: "Board",
+		};
+	}
 
-    return {
-      title: board?.title || "Board"
-    };
-};
+	const board = await db.board.findUnique({
+		where: {
+			id: params.boardId,
+			orgId,
+		},
+	});
+
+	return {
+		title: board?.title || "Board",
+	};
+}
 
 const BoardIdLayout = async ({ params, children }: BoardIdLayoutProps) => {
-    const { orgId } = auth();
-    const { boardId } = params;
+	const { orgId } = auth();
+	const { boardId } = params;
 
-    if (!orgId) {
-        return redirect("/select-org");
-    }
+	if (!orgId) {
+		return redirect("/select-org");
+	}
 
-    const board = await db.board.findUnique({
-        where: {
-            id: boardId,
-            orgId
-        }
-    });
+	const board = await db.board.findUnique({
+		where: {
+			id: boardId,
+			orgId,
+		},
+	});
 
-    if (!board) {
-        notFound();
-    }
+	if (!board) {
+		notFound();
+	}
 
-    return (
-        <div
-            className="relative h-full bg-no-repeat bg-cover bg-center"
-            style={{ backgroundImage: `url(${board.imageFullUrl})` }}
-        >
-            <BoardNavbar board={board} />
-            <div className="absolute inset-0 bg-black/10" />
-            <main className="relative pt-28 h-full">
-                {children}
-            </main>
-        </div>
-    )
-}
+	return (
+		<div
+			className="relative h-full bg-cover bg-center bg-no-repeat"
+			style={{ backgroundImage: `url(${board.imageFullUrl})` }}
+		>
+			<BoardNavbar board={board} />
+			<div className="absolute inset-0 bg-black/10" />
+			<main className="relative h-full pt-28">{children}</main>
+		</div>
+	);
+};
 
 export default BoardIdLayout;

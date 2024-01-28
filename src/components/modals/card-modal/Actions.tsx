@@ -13,66 +13,70 @@ import { useAction } from "@/hooks/useActions";
 import { useCardModal } from "@/hooks/useCardModal";
 
 interface CardModalActionsProps {
-    card: BoardCardWithList
+	card: BoardCardWithList;
 }
 
 export const CardModalActions = ({ card }: CardModalActionsProps) => {
-    const params = useParams();
-    const boardId = params.boardId as string;
-    const { id } = card;
+	const params = useParams();
+	const boardId = params.boardId as string;
+	const { id } = card;
 
-    const onClose = useCardModal((state) => state.onClose);
+	const onClose = useCardModal((state) => state.onClose);
 
-    const { execute: copyCard, isLoading: isCardCopying } = useAction(copyBoardCard, {
-        onSuccess: ({ title }) => {
-            toast.success(`Card "${title}" copied`);
-            onClose();
-        },
-        onError: (error) => toast.error(error)
-    });
-    const { execute: deleteCard, isLoading: isCardDeleting } = useAction(deleteBoardCard, {
-        onSuccess: () => {
-            toast.success("Card deleted");
-            onClose();
-        },
-        onError: (error) => toast.error(error)
-    });
+	const { execute: copyCard, isLoading: isCardCopying } = useAction(
+		copyBoardCard,
+		{
+			onSuccess: ({ title }) => {
+				toast.success(`Card "${title}" copied`);
+				onClose();
+			},
+			onError: (error) => toast.error(error),
+		},
+	);
+	const { execute: deleteCard, isLoading: isCardDeleting } = useAction(
+		deleteBoardCard,
+		{
+			onSuccess: () => {
+				toast.success("Card deleted");
+				onClose();
+			},
+			onError: (error) => toast.error(error),
+		},
+	);
 
-    return (
-        <div className="space-y-2 mt-2">
-            <p className="text-xs font-semibold">
-                Actions
-            </p>
-            <Button
-                variant="gray"
-                size="inline"
-                disabled={isCardCopying}
-                onClick={() => copyCard({ id, boardId })}
-                className="w-full justify-start"
-            >
-                <Copy className="h-4 w-4 mr-2" />
-                Copy
-            </Button>
-            <Button
-                variant="gray"
-                size="inline"
-                disabled={isCardDeleting}
-                onClick={() => deleteCard({ id, boardId })}
-                className="w-full justify-start"
-            >
-                <Trash className="h-4 w-4 mr-2 text-red-600" />
-                Delete
-            </Button>
-        </div>
-    );
+	return (
+		<div className="mt-2 space-y-2">
+			<p className="text-xs font-semibold">Actions</p>
+			<Button
+				variant="gray"
+				size="inline"
+				disabled={isCardCopying}
+				onClick={() => copyCard({ id, boardId })}
+				className="w-full justify-start"
+			>
+				<Copy className="mr-2 h-4 w-4" />
+				Copy
+			</Button>
+			<Button
+				variant="gray"
+				size="inline"
+				disabled={isCardDeleting}
+				onClick={() => deleteCard({ id, boardId })}
+				className="w-full justify-start"
+			>
+				<Trash className="mr-2 h-4 w-4 text-red-600" />
+				Delete
+			</Button>
+		</div>
+	);
 };
 
 CardModalActions.Skeleton = function CardModalActionsSkeleton() {
-    return (
-        <div className="space-y-2 mt-2">
-            <Skeleton  className="w-20 h-4 bg-neutral-300" /> 
-            <Skeleton  className="w-full h-8 bg-neutral-300" /> 
-            <Skeleton  className="w-full h-8 bg-neutral-300" /> 
-        </div>
-    )
-}
+	return (
+		<div className="mt-2 space-y-2">
+			<Skeleton className="h-4 w-20 bg-neutral-300" />
+			<Skeleton className="h-8 w-full bg-neutral-300" />
+			<Skeleton className="h-8 w-full bg-neutral-300" />
+		</div>
+	);
+};

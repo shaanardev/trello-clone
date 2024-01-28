@@ -5,20 +5,20 @@ import OrgControl from "./_components/Controls";
 import { startCase } from "@/lib/utils";
 
 export async function generateMetadata() {
-    const { orgSlug } = auth();
-  
-    return {
-      title: startCase(orgSlug || "organization")
-    };
-  };
+	const { orgSlug } = auth();
+
+	return {
+		title: startCase(orgSlug || "organization"),
+	};
+}
 
 const OrganizationIdLayout = ({ children }: PropsWithChildren) => {
-    return (
-        <>
-            <OrgControl />
-            {children}  
-        </>
-    );
+	return (
+		<>
+			<OrgControl />
+			{children}
+		</>
+	);
 };
 
 export default OrganizationIdLayout;

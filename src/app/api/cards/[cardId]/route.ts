@@ -34,4 +34,4 @@ export const GET = async (req: Request, { params }: { params: { cardId: string }
     } catch (error) {
         return new NextResponse("Internal Server Error", { status: 500 });
     }
-}
+};

@@ -26,7 +26,7 @@ export async function POST(req: Request) {
         if (!orgId) {
             return new NextResponse("Organization ID is required", { status: 400 });
         }
-        
+
         const { id, customer, items, current_period_end } = subscription;
         await db.orgSubscription.create({
             data: {
@@ -56,4 +56,4 @@ export async function POST(req: Request) {
     };
 
     return new NextResponse(null, { status: 200 });
-}
+};

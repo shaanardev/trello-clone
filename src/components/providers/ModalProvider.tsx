@@ -6,20 +6,20 @@ import { CardModal } from "@/components/modals/card-modal";
 import { ProModal } from "@/components/modals/ProModal";
 
 export const ModalProvider = () => {
-    const [isMounted, setIsMounted] = useState(false);
+	const [isMounted, setIsMounted] = useState(false);
 
-    useEffect(() => {
-      setIsMounted(true);
-    }, []);
-  
-    if (!isMounted) {
-      return null;
-    }
+	useEffect(() => {
+		setIsMounted(true);
+	}, []);
 
-    return (
-        <>
-            <CardModal />
-            <ProModal />
-        </>
-    );
+	if (!isMounted) {
+		return null;
+	}
+
+	return (
+		<>
+			<CardModal />
+			<ProModal />
+		</>
+	);
 };

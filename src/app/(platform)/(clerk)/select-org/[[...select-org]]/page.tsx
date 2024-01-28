@@ -1,11 +1,11 @@
-import { OrganizationList } from "@clerk/nextjs"
+import { OrganizationList } from "@clerk/nextjs";
 
 const Page = () => {
     return (
-        <OrganizationList 
+        <OrganizationList
             hidePersonal
-            afterSelectOrganizationUrl="/organization/:id" 
-            afterCreateOrganizationUrl="/organization/:id" 
+            afterSelectOrganizationUrl="/organization/:id"
+            afterCreateOrganizationUrl="/organization/:id"
         />
     );
 };

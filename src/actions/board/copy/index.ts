@@ -1,7 +1,6 @@
 "use server";
 
 import { auth } from "@clerk/nextjs";
-import { revalidatePath } from "next/cache";
 import { ENTITY_TYPE, ACTION, Board } from "@prisma/client";
 
 import type { InputType, ReturnType } from "./types";
@@ -110,7 +109,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     }
 
     redirect(`/board/${board.id}`);
-    //return { data: board };
+    return { data: board };
 }
 
 export const copyBoard = createSafeAction(CopyBoardSchema, handler);

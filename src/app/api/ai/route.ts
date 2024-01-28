@@ -10,8 +10,8 @@ import { openai } from "@/lib/openai";
 import { ratelimits } from "@/lib/rate-limiters";
 
 export const POST = async (req: NextRequest) => {
-    const { userId, orgId} = auth();
-    
+    const { userId, orgId } = auth();
+
     if (!userId || !orgId) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -20,7 +20,7 @@ export const POST = async (req: NextRequest) => {
 
     const ip = req.ip ?? '127.0.0.1';
     const limiter = isPro ? ratelimits.paid : ratelimits.free;
-    const { success  } = await limiter.limit(ip);
+    const { success } = await limiter.limit(ip);
     if (!success) {
         return new NextResponse('Too Many Requests', { status: 429 });
     };
@@ -75,15 +75,15 @@ export const POST = async (req: NextRequest) => {
             {
                 role: 'system',
                 content:
-                  'Using the following title/name of a task, generate  a short concise description between 50 to 100 words.',
+                    'Using the following title/name of a task, generate  a short concise description between 50 to 100 words.',
             },
-            { 
-                role: 'user', 
+            {
+                role: 'user',
                 content: `Using the following title/name of a task, generate  a short concise description between 50 to 100 words.
                 \n----------------\n
                 CONTEXT:
                 Task title/name is ${card.title}
-                ` 
+                `
             }
         ],
     });

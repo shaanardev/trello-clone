@@ -24,7 +24,7 @@ export const useEditingFormInput = <T extends HTMLElement = HTMLInputElement>(op
         setIsEditing(true);
         options?.onEnableEditing?.();
     }
-    const disableEditing = () => { 
+    const disableEditing = () => {
         setIsEditing(false);
         options?.onDisableEditing?.();
     }
