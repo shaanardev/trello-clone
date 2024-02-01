@@ -34,11 +34,11 @@ export const BoardListItem = ({ boardList, index }: BoardListItemProps) => {
 				<li
 					ref={innerRef}
 					{...draggableProps}
-					className="h-full w-[272px] shrink-0 select-none"
+					className="h-full w-[272px] shrink-0 select-none "
 				>
 					<div
 						{...dragHandleProps}
-						className="w-full rounded-md bg-[#f1f2f4] pb-2 shadow-md"
+						className="w-full rounded-md bg-[#f1f2f4] pb-2 shadow-md "
 					>
 						<BoardListHeader
 							onAddCard={enableEditing}

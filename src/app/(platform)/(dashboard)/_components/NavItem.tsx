@@ -83,7 +83,7 @@ export const NavItem = ({
 							className="rounded-sm object-cover"
 						/>
 					</div>
-					<span className="text-sm font-medium">
+					<span className="text-sm font-medium dark:text-white">
 						{organization.name}
 					</span>
 				</div>
@@ -95,7 +95,7 @@ export const NavItem = ({
 						size="sm"
 						onClick={() => onClick(route.href)}
 						className={cn(
-							"mb-1 w-full justify-start pl-10 font-normal",
+							"mb-1 w-full justify-start pl-10 font-normal dark:text-white/80",
 							pathname === route.href &&
 								"bg-sky-500/10 text-sky-700",
 						)}

@@ -98,7 +98,7 @@ export const BoardCardForm = forwardRef<
 		<div className="px-2 pt-2">
 			<Button
 				onClick={enableEditing}
-				className="h-auto w-full justify-start px-2 py-1.5 text-sm text-muted-foreground"
+				className="h-auto w-full justify-start px-2 py-1.5 text-sm text-muted-foreground dark:bg-black dark:text-white dark:hover:bg-black/80"
 				size="sm"
 				variant="ghost"
 			>

@@ -50,7 +50,7 @@ export const BoardListForm = () => {
 				<form
 					action={onSubmit}
 					ref={formRef}
-					className="w-full space-y-4 rounded-md bg-white p-3 shadow-md"
+					className="w-full space-y-4 rounded-md bg-white p-3 shadow-md dark:bg-black dark:text-white dark:hover:bg-black/80"
 				>
 					<FormInput
 						id="title"
@@ -79,7 +79,7 @@ export const BoardListForm = () => {
 		<ListWrapper>
 			<button
 				onClick={enableEditing}
-				className="flex w-full items-center rounded-md bg-white/80 p-3 text-sm font-medium transition hover:bg-white/50"
+				className="flex w-full items-center rounded-md bg-white/80 p-3 text-sm font-medium transition hover:bg-white/50 dark:bg-black dark:text-white dark:hover:bg-black/80" 
 			>
 				<Plus className="mr-2 h-4 w-4" />
 				Add a list

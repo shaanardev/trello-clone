@@ -9,6 +9,9 @@ const config = {
     './src/**/*.{ts,tsx}',
 	],
   prefix: "",
+  variants: {
+    typography: ['dark'],
+  },
   theme: {
     container: {
       center: true,
@@ -17,6 +20,8 @@ const config = {
         "2xl": "1400px",
       },
     },
+    //@ts-ignore
+    typography: (_theme) => ({}),
     extend: {
       colors: {
         border: "hsl(var(--border))",
@@ -72,6 +77,14 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      //@ts-ignore
+      typography: (theme) => ({
+        dark: {
+          css: {
+            color: 'white',
+          },
+        },
+      }),
     },
   },
   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],

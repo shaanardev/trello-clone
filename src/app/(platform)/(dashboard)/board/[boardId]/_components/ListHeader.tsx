@@ -58,7 +58,7 @@ export const BoardListHeader = ({
 	};
 
 	return (
-		<div className="flex items-start justify-between gap-x-2 px-2 pt-2 text-sm font-semibold">
+		<div className="flex items-start justify-between gap-x-2 px-2 pt-2 text-sm font-semibold dark:bg-black dark:text-white dark:hover:bg-black/80">
 			{isEditing ? (
 				<form
 					ref={formRef}

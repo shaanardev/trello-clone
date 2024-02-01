@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import { MobileSidebar } from "./MobileSidebar";
 import { FormPopOver } from "@/components/forms/FormPopOver";
+import { ThemeToggle } from "@/components/ToggleTheme";
 
 const Navbar = () => {
     return (
@@ -18,7 +19,7 @@ const Navbar = () => {
                     <Button
                         size="sm"
                         variant="primary"
-                        className="hidden h-auto rounded-sm px-2 py-1.5 md:block"
+                        className="hidden h-auto rounded-sm px-2 py-1.5 md:block dark:text-white"
                     >
                         Create
                     </Button>
@@ -49,6 +50,7 @@ const Navbar = () => {
                         },
                     }}
                 />
+                <ThemeToggle />
                 <UserButton
                     afterSignOutUrl="/"
                     appearance={{
